@@ -12,8 +12,10 @@
     "postinstall": "npm run build",
     "start": "node index.js",
     "start-quiet": "node index.js >/dev/null",
-    "pa11y-test":"pa11y-ci",
-    "ci-test":"start-server-and-test start-quiet 3000 pa11y-test"
+    "pa11y-test": "pa11y-ci",
+    "snyk-test": "snyk test",
+    "ci-test": "start-server-and-test start-quiet 3000 pa11y-test",
+    "all-tests": "npm run test && npm run snyk-test && npm run ci-test"
   },
   "author": "Defra DDTS",
   "contributors": [
@@ -40,8 +42,9 @@
     "good-squeeze": "5.1.0",
     "lab": "^18.0.2",
     "node-sass": "^4.11.0",
-    "standard": "12.0.1",
     "pa11y-ci": "^2.2.0",
+    "snyk": "^1.154.0",
+    "standard": "12.0.1",
     "start-server-and-test": "^1.9.0"
   }
 }
