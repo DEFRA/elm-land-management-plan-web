@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  web:
+    build: ./
+    image: elm-lmp-web:local
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: 3000
+    ports:
+      - "${PORT}:3000"
