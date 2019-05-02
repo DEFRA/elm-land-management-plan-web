@@ -1,6 +1,6 @@
 const createServer = require('./server')
 
-process.on('SIGINT', function() {
+process.on('SIGINT', function () {
   process.exit()
 })
 
