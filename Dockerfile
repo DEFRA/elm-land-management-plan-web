@@ -7,10 +7,10 @@ FROM node:${NODE_VERSION}-alpine AS development
 USER node
 WORKDIR /home/node
 
-COPY package.json package-lock.json /home/node/
+COPY --chown=node:node package.json package-lock.json /home/node/
 RUN npm ci
 
-COPY . /home/node/
+COPY --chown=node:node . /home/node/
 RUN npm run build
 
 CMD ["node", "index.js"]
@@ -25,9 +25,9 @@ WORKDIR /home/node
 
 EXPOSE 3000
 
-COPY --from=development /home/node/package.json /home/node/package-lock.json /home/node/
-COPY --from=development /home/node/server /home/node/server/
-COPY --from=development /home/node/index.js /home/node/index.js
+COPY --chown=node:node --from=development /home/node/package.json /home/node/package-lock.json /home/node/
+COPY --chown=node:node --from=development /home/node/server /home/node/server/
+COPY --chown=node:node --from=development /home/node/index.js /home/node/index.js
 RUN npm ci
 
 CMD ["node", "index.js"]
