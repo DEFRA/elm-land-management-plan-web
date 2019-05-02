@@ -9,7 +9,6 @@
     "lint": "standard",
     "unit-test": "lab -c -r console -o stdout -r junit -o TEST-test.xml",
     "test": "npm run lint && npm run unit-test",
-    "postinstall": "npm run build",
     "start": "node index.js",
     "start-quiet": "node index.js >/dev/null",
     "pa11y-test": "pa11y-ci",
