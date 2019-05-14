@@ -8,7 +8,7 @@
     "build:css": "bin/build-css",
     "build": "bin/build",
     "lint": "standard",
-    "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
+    "unit-test": "lab -c -r console -o stdout -r junit -o TEST-$(date '+%Y%m%d-%H%M%S').xml",
     "test": "npm run lint && npm run unit-test",
     "start": "node index.js",
     "start-quiet": "node index.js >/dev/null",
