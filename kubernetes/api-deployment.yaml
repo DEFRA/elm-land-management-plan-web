@@ -2,15 +2,15 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    app.component: api
-  name: api
+    app.component: elm-lmp-api
+  name: elm-lmp-api
 spec:
   replicas: 1
   strategy: {}
   template:
     metadata:
       labels:
-        app.component: api
+        app.component: elm-lmp-api
     spec:
       containers:
       - env:
@@ -19,7 +19,7 @@ spec:
         - name: PORT
           value: "3001"
         image: elm-lmp-api:local
-        name: api
+        name: elm-lmp-api
         ports:
         - containerPort: 3001
         resources: {}

@@ -7,6 +7,7 @@ FROM node:${NODE_VERSION}-alpine AS development
 USER node
 WORKDIR /home/node
 
+ENV NODE_ENV development
 COPY --chown=node:node package.json package-lock.json /home/node/
 RUN npm ci
 
@@ -17,6 +18,8 @@ CMD ["node", "index.js"]
 
 # Production
 FROM node:${NODE_VERSION}-alpine AS production
+
+ARG NODE_ENV
 
 ENV NODE_ENV $NODE_ENV
 
