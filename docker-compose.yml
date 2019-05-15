@@ -7,6 +7,6 @@ services:
         NODE_ENV: ${NODE_ENV}
       context: .
       target: ${NODE_ENV}
-    image: elm-lmp-web:local
+    image: elm-lmp-web:${VERSION}
     ports:
       - "${PORT}:3000"

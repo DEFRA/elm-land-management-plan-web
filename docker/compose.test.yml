@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  pa11y:
+    build:
+      context: .
+      target: pa11y
+    command: npm run pa11y-test
+
+  unit-test:
+    build:
+      args:
+        NODE_ENV: development
+      context: .
+      target: development
+    command: npm run unit-test
