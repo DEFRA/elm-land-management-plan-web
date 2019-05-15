@@ -7,42 +7,34 @@ pool:
 variables:
   azureContainerRegistry: djbinghamRegistry
   azureSubscriptionEndpoint: djbinghamResourceManager
+  containerImage: elm-lmp-web:$(Build.BuildId)
   system.debug: true
+  testOutputDir: test-output
 
 steps:
 - task: Bash@3
   displayName: Build container images
   inputs:
-    script: |
-      docker build -t elm-lmp-web:$(Build.BuildId) .
-      docker build -t elm-lmp-web:$(Build.BuildId)-development --target development .
-      docker build -t elm-lmp-web:$(Build.BuildId)-pa11y --target pa11y .
+    env:
+      CONTAINER_IMAGE: $(containerImage)
+    filePath: bin/docker/build
     targetType: inline
 
 - task: Bash@3
-  displayName: Unit test
+  displayName: Test
   inputs:
-    script: |
-      mkdir "$(pwd)/test-output/"
-      docker run --rm -v "$(pwd)/test-output/:/home/node/test-output/" elm-lmp-web:$(Build.BuildId)-development npm run test
+    env:
+      CONTAINER_IMAGE: $(containerImage)
+      OUTPUT_DIR: $(testOutputDir)
+    filePath: bin/docker/test
     targetType: inline
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'test-output/TEST-*.xml'
+    testResultsFormat: JUnit
+    testResultsFiles: $(testOutputDir)/TEST-*.xml
     failTaskOnFailedTests: true
-    testRunTitle: 'Unit-test'
-
-- task: Bash@3
-  displayName: Pa11y test
-  inputs:
-    script: |
-      docker run -d --name web elm-lmp-web:$(Build.BuildId)
-      docker run --rm --link web:web elm-lmp-web:$(Build.BuildId)-pa11y npm run pa11y-test
-      docker stop web
-      docker rm web
-    targetType: inline
+    testRunTitle: Unit-test
 
 - task: Docker@2
   displayName: Build and Push

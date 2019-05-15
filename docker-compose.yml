@@ -7,6 +7,6 @@ services:
         NODE_ENV: ${NODE_ENV}
       context: .
       target: ${NODE_ENV}
-    image: elm-lmp-web:${VERSION}
+    image: CONTAINER_IMAGE
     ports:
       - "${PORT}:3000"

@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+# Environment variable defaults
+test "${CONTAINER_IMAGE}" = "" && CONTAINER_IMAGE="elm-lmp-web:local"
+test "${OUTPUT_DIR}" = "" && OUTPUT_DIR="test-output"
+
+# Ensure output directory exists
+outputDirectory="$(pwd)/${OUTPUT_DIR}/"
+test -d "${outputDirectory}" || mkdir "${outputDirectory}"
+
+# Unit tests
+docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development npm run test
+
+# Pa11y
+docker run -d --name web ${CONTAINER_IMAGE}
+docker run --rm --link web:web ${CONTAINER_IMAGE}-pa11y npm run pa11y-test
+docker stop web
+docker rm web
