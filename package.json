@@ -13,7 +13,7 @@
     "lint": "standard",
     "pa11y-test": "pa11y-ci",
     "snyk-test": "snyk test",
-    "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/TEST-test.xml",
+    "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/TEST-$(date '+%Y%m%d-%H%M%S').xml",
     "all-tests": "npm run test && npm run pa11y-test && npm run snyk-test"
   },
   "author": "Defra DDTS",
