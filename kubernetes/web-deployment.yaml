@@ -15,7 +15,7 @@ spec:
       containers:
       - env:
         - name: NODE_ENV
-          value: development
+          value: production
         - name: PORT
           value: "3000"
         image: elm-lmp-web:local

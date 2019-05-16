@@ -6,6 +6,8 @@ FROM node:${NODE_VERSION}-alpine AS development
 USER node
 WORKDIR /home/node
 
+ENV NODE_ENV development
+
 COPY --chown=node:node package.json package-lock.json /home/node/
 RUN npm ci
 
@@ -40,7 +42,7 @@ CMD ["npm", "run", "pa11y-test"]
 FROM node:${NODE_VERSION}-alpine AS production
 
 ARG NODE_ENV=production
-ENV NODE_ENV $NODE_ENV
+ENV NODE_ENV ${NODE_ENV}
 
 USER node
 WORKDIR /home/node
