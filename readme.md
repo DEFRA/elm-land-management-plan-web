@@ -9,19 +9,6 @@ This is the web front end for the Land Management Plan portion of the ELM servic
 | NODE_ENV | Node environment |    no    |         | development,test,production |       |
 | PORT     | Port number      |    no    | 3000    |                             |       |
 
-# Running in Kubernetes
-To run this application in Kubernetes, first ensure that you have an Ingress Controller running, then apply the `kubernetes/` folder to your cluster:
-
-```
-# Start NGINX Ingress Controller
-bin/start-ingress-controller
-
-# Deploy app to local cluster
-kubectl apply -f kubernetes/
-```
-
-For more information about the NGINX Ingress Controller, see: `https://kubernetes.github.io/ingress-nginx/`.
-
 # Prerequisites
 
 Node v8+
@@ -32,15 +19,20 @@ gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2
 
 # Running the application
 
-First build the application using:
+This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. Use `kubectl` to run a Kubernetes stack on your local machine.
 
-`$ npm run build`
+```
+# Build container images
+bin/docker/build
 
-Currently this will just build the `govuk-frontend` sass but may be extended to include other build tasks as needed (e.g. client-side js using browserify or webpack etc.)
+# Start NGINX Ingress Controller
+bin/start-ingress
 
-Now the application is ready to run:
+# Deploy app to local cluster
+kubectl apply -f kubernetes/
+```
 
-`$ node index.js`
+For more information about the NGINX Ingress Controller, see: `https://kubernetes.github.io/ingress-nginx/`.
 
 ## Config
 
@@ -49,6 +41,8 @@ This is where to put any config and all config should be read from the environme
 The final config object should be validated using joi and the application should not start otherwise.
 
 A table of environment variables should be maintained in this README.
+
+Default values appropriate for development environments are declared in `.env`, which is automatically read by `docker-compose`.
 
 ## Plugins
 
@@ -79,7 +73,7 @@ Any build output should write to `server/public/build`. This path is in the `.gi
 
 ## Routes
 
-Incoming requests are handled by the server via routes. 
+Incoming requests are handled by the server via routes.
 Each route describes an HTTP endpoint with a path, method, and other properties.
 
 Routes are found in the `server/routes` directory and loaded using the `server/plugins/router.js` plugin.
@@ -105,14 +99,11 @@ There are lots of [route options](http://hapijs.com/api#route-options), here's t
 
 ## Tasks
 
-Build tasks are created using simple shell scripts or node.js programs.
-The default ones are found in the `bin` directory.
+Shell scripts are provided in `bin/docker` for building and testing this application using Docker. Specific tasks are declard as NPM scripts in `package.json` and run within short-lived containers so the only dependency on the host system is a running Docker instance.
 
-The task runner is simply `npm` using `npm-scripts`.
+### NPM Scripts
 
-We chose to use this for simplicity but there's nothing to stop you adding `gulp`, `grunt` or another task runner if you prefer. 
-
-The predefined tasks are:
+The predefined tasks from the Defra boilerplate project are:
 
 - `npm run build` (Runs all build sub-tasks)
 - `npm run build:css` (Builds the client-side sass)
@@ -120,9 +111,11 @@ The predefined tasks are:
 - `npm run unit-test` (Runs the `lab` tests in the `/test` folder)
 - `npm test` (Runs the `lint` task then the `unit-tests`)
 
-Added tasks are
+Additional tasks for this project are:
 
-- `npm run ci-test` (Runs the `pa11y-ci` tests against the urls in the `.pa11yci` file)
+- `npm run pa11y-test` (Runs the `pa11y-ci` tests against the urls in the `.pa11yci` file)
+- `npm run snyk-test` (Runs `snyk` tests)
+- `npm run all-tests` (Runs all tests)
 - `npm run start` (Starts the server)
 - `npm run start-quiet` (Starts the server without logging anything to console)
 
@@ -146,4 +139,3 @@ See the `/test` folder for more information.
 [standard.js](http://standardjs.com/) is used to lint both the server-side and client-side javascript code.
 
 It's defined as a build task and can be run using `npm run lint`.
-
