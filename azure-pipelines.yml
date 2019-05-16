@@ -6,9 +6,7 @@ pool:
 
 variables:
   azureContainerRegistry: 'mcCntRegistry Connection'
-  # azureSubscriptionEndpoint: djbinghamResourceManager
   containerImage: elm-lmp-web:$(Build.BuildId)
-  system.debug: true
   testOutputDir: test-output
 
 steps:
