@@ -14,18 +14,18 @@ variables:
 steps:
 - task: Bash@3
   displayName: Build container images
+  env:
+    CONTAINER_IMAGE: $(containerImage)
   inputs:
-    env:
-      CONTAINER_IMAGE: $(containerImage)
     filePath: bin/docker/build
     targetType: inline
 
 - task: Bash@3
   displayName: Test
+  env:
+    CONTAINER_IMAGE: $(containerImage)
+    OUTPUT_DIR: $(testOutputDir)
   inputs:
-    env:
-      CONTAINER_IMAGE: $(containerImage)
-      OUTPUT_DIR: $(testOutputDir)
     filePath: bin/docker/test
     targetType: inline
 
