@@ -5,8 +5,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  azureContainerRegistry: djbinghamRegistry
-  azureSubscriptionEndpoint: djbinghamResourceManager
+  azureContainerRegistry: mcCntRegistry
+  # azureSubscriptionEndpoint: djbinghamResourceManager
   containerImage: elm-lmp-web:$(Build.BuildId)
   system.debug: true
   testOutputDir: test-output
