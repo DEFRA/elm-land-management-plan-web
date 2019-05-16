@@ -14,7 +14,7 @@
     "pa11y-test": "pa11y-ci",
     "snyk-test": "snyk test",
     "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/TEST-test.xml",
-    "all-tests": "npm run lint && npm run unit-test && npm run pa11y-test && npm run snyk-test"
+    "all-tests": "npm run test && npm run pa11y-test && npm run snyk-test"
   },
   "author": "Defra DDTS",
   "contributors": [
