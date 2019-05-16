@@ -10,32 +10,27 @@ variables:
   testOutputDir: test-output
 
 steps:
-- task: Bash@3
-  displayName: Build container images
+- displayName: Build container images
+  bash: bin/docker/build
   env:
     CONTAINER_IMAGE: $(containerImage)
-  inputs:
-    filePath: bin/docker/build
-    targetType: inline
 
-- task: Bash@3
-  displayName: Test
+- displayName: Test
+  bash: bin/docker/test
   env:
     CONTAINER_IMAGE: $(containerImage)
     OUTPUT_DIR: $(testOutputDir)
-  inputs:
-    filePath: bin/docker/test
-    targetType: inline
 
-- task: PublishTestResults@2
+- displayName: Publish test results
+  task: PublishTestResults@2
   inputs:
     testResultsFormat: JUnit
     testResultsFiles: $(testOutputDir)/TEST-*.xml
     failTaskOnFailedTests: true
     testRunTitle: Unit-test
 
-- task: Docker@2
-  displayName: Build and Push
+- displayName: Push production container image
+  task: Docker@2
   inputs:
     containerRegistry: $(azureContainerRegistry)
     command: push
