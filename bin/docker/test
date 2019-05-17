@@ -8,6 +8,15 @@ test "${OUTPUT_DIR}" = "" && OUTPUT_DIR="test-output"
 outputDirectory="$(pwd)/${OUTPUT_DIR}/"
 test -d "${outputDirectory}" || mkdir "${outputDirectory}"
 
+# Debugging
+echo "DEBUG ls -la on host system:"
+ls -la
+echo "DEBUG ls -la in container:"
+docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development ls -la
+echo "DEBUG ls -la OUTPUT_DIR in container:"
+docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development ls -la /home/node/${OUTPUT_DIR}/
+# End debugging
+
 # Unit tests
 docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development npm run test
 
