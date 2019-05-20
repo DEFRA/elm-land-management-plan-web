@@ -11,9 +11,13 @@ chmod 777 "${outputDirectory}"
 
 # Unit tests
 docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development npm run test
+result=$?
+test ${result} != 0 && echo "Unit test failed. Exiting." && exit ${result}
 
 # Pa11y
 docker run -d --name web ${CONTAINER_IMAGE}
 docker run --rm --link web:web ${CONTAINER_IMAGE}-pa11y npm run pa11y-test
+result=$?
 docker stop web
 docker rm web
+test ${result} != 0 && echo "Pa11y test failed. Exiting." && exit ${result}
