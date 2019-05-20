@@ -1,4 +1,6 @@
+.config/
 .DS_Store/
+.npm/
 .vscode/
 node_modules/
 server/public/build/
