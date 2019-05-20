@@ -36,9 +36,12 @@ steps:
     failTaskOnFailedTests: true
     testRunTitle: Unit-test
 
-- task: Docker@2
-  displayName: Push production container image
-  inputs:
-    command: push
-    containerRegistry: $(azureContainerRegistry)
-    repository: elm-lmp-web
+- bash: docker push $(containerImage)
+  displayName: Push production image
+
+# - task: Docker@2
+#   displayName: Push production container image
+#   inputs:
+#     command: push
+#     containerRegistry: $(azureContainerRegistry)
+#     repository: elm-lmp-web
