@@ -4,9 +4,10 @@
 test "${CONTAINER_IMAGE}" = "" && CONTAINER_IMAGE="elm-lmp-web:local"
 test "${OUTPUT_DIR}" = "" && OUTPUT_DIR="test-output"
 
-# Ensure output directory exists
+# Ensure output directory exists and is writable from containers
 outputDirectory="$(pwd)/${OUTPUT_DIR}/"
 test -d "${outputDirectory}" || mkdir "${outputDirectory}"
+chmod 777 "${outputDirectory}"
 
 # Debugging
 echo "DEBUG ls -la on host system:"
