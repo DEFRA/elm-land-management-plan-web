@@ -3,5 +3,7 @@
 test "${CONTAINER_IMAGE}" = "" && CONTAINER_IMAGE="elm-lmp-web:local"
 
 docker build -t ${CONTAINER_IMAGE} .
-docker build -t ${CONTAINER_IMAGE}-development --target=development .
-docker build -t ${CONTAINER_IMAGE}-pa11y --target=pa11y .
+test $? -eq 0 && docker build -t ${CONTAINER_IMAGE}-development --target=development .
+test $? -eq 0 && docker build -t ${CONTAINER_IMAGE}-pa11y --target=pa11y .
+
+exit $?
