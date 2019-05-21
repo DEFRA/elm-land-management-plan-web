@@ -1,4 +1,5 @@
 const fetch = require('node-fetch')
+const config = require('../config')
 
 module.exports = {
   plugin: {
@@ -6,8 +7,9 @@ module.exports = {
     register: (server, options) => {
       server.method({
         name: 'api.getJson',
-        method: async (url) => new Promise(async (resolve, reject) => {
+        method: async (action) => new Promise(async (resolve, reject) => {
           try {
+            const url = config.apibase + action
             const response = await fetch(url)
             resolve(await response.json())
           } catch (error) {
