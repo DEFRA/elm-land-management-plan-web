@@ -7,7 +7,7 @@ pool:
 variables:
   - group: containergroup
   - name: containerImage
-    value: elm-lmp-web:$(Build.BuildId)
+    value: '***/elm-lmp-web:$(Build.BuildId)'
   - nane: testOutputDir
     value: test-output
   - name: repository
