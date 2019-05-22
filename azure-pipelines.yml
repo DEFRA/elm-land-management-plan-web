@@ -6,7 +6,7 @@ pool:
 
 variables:
   azureContainerRegistry: 'mcCntRegistry Connection'
-  containerImage: elm-lmp-web:$(Build.BuildId)
+  containerImage: '***/elm-lmp-web:$(Build.BuildId)'
   testOutputDir: test-output
 
 steps:
