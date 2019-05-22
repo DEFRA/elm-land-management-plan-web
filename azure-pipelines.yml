@@ -20,6 +20,7 @@ steps:
     command: build
     containerRegistry: $(azureContainerRegistry)
     repository: $(repository)
+    tags: $(containerImage)
 
 - bash: docker build -t $(containerImage)-development --target=development .
   displayName: Build development image
