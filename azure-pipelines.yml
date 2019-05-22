@@ -8,10 +8,10 @@ variables:
   - group: containergroup
   - name: containerImage
     value: elm-lmp-web:$(Build.BuildId)
-  - name: testOutputDir
-    value: test-output
   - name: repository
     value: elm-lmp-web
+  - name: testOutputDir
+    value: test-output
 
 steps:
 - task: Docker@2
@@ -27,9 +27,6 @@ steps:
 
 - bash: docker build -t $(containerImage)-pa11y --target=pa11y .
   displayName: Build Pa11y image
-
-- bash: docker images
-  displayName: DEBUG - list Docker images
 
 - bash: bin/docker/test
   displayName: Test
