@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-# Start Kubernetes components for NGINX Ingress Controller (https://kubernetes.github.io/ingress-nginx/deploy/)
+# Deploy Nginx Ingress Controller (https://kubernetes.github.io/ingress-nginx/deploy/)
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/mandatory.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml
 
-# Start app
+# Deploy app
 kubectl apply -f kubernetes/

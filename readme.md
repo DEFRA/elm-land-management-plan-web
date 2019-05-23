@@ -32,15 +32,40 @@ This application depends on services maintained in other repositories to provide
 
 # Running the application
 
+This application builds to a container image which may be run in isolation (for manual testing) or as part of a stack using Kubernetes or Docker Compose.
+
+To run the entire stack, follow build instructions for connected services (in their own repositories), then:
+
 ```
-# Build container images
+# Build application container image
 bin/build
 
-# Deploy app and an Nginx Ingress Controller to local Kubernetes
+# Deploy to local Kubernetes (also starts an ingress controller - see below)
 bin/start
+
+# Stop and remove app containers
+bin/stop
+
+# Run automated tests
+bin/test
 ```
 
-For more information about the NGINX Ingress Controller, see: `https://kubernetes.github.io/ingress-nginx/`.
+## Ingress Controller
+
+For traffic to reach services running in Kubernetes, an ingress controller is required. If you don't have other projects running specific ingress controllers already, you don't need to worry about this. The `bin/start` script will start an [Nginx Ingress Controller](https://kubernetes.github.io/ingress-nginx) for you.
+
+If you are running other projects in Kubernetes, you should inspect the start script to check for conflicts. This application may work fine with other types of ingress controller, they just haven't been tested.
+
+## Tasks
+
+Build tasks are maintained as shell scripts in the `bin` directory. These depend largely on Node programs, which are called via `npm-scripts` for simplicity and run in containers so the only direct dependency is Docker.
+
+| Script      | Description                                                    |
+|-------------|----------------------------------------------------------------|
+| `bin/build` | Build container images                                         |
+| `bin/start` | Deploy app and an Nginx Ingress Controller to local Kubernetes |
+| `bin/test`  | Run automated tests against built container images             |
+| `bin/stop`  | Stop and remove app containers from local Kubernetes           |
 
 ## Config
 
@@ -102,16 +127,6 @@ A single route looks like this:
 ```
 
 There are lots of [route options](http://hapijs.com/api#route-options), here's the documentation on [hapi routes](http://hapijs.com/tutorials/routing)
-
-## Tasks
-
-Build tasks are maintained as shell scripts in the `bin` directory. These depend largely on Node programs, which are called via `npm-scripts` for simplicity and run in containers so the only direct dependency is Docker.
-
-| Script      | Description                                                    |
-|-------------|----------------------------------------------------------------|
-| `bin/build` | Build container images                                         |
-| `bin/start` | Deploy app and an Nginx Ingress Controller to local Kubernetes |
-| `bin/test`  | Run automated tests against built container images             |
 
 ## Testing
 
