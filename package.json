@@ -5,16 +5,15 @@
   "main": "index.js",
   "homepage": "https://github.com/DEFRA/elm-land-management-plan-web",
   "scripts": {
-    "build:css": "bin/build-css",
-    "build": "bin/build",
-    "test": "npm run lint && npm run unit-test",
+    "build": "npm run build:css",
+    "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
+    "pretest": "npm run test:lint",
     "start": "node index.js",
-    "start-quiet": "node index.js >/dev/null",
-    "lint": "standard",
-    "pa11y-test": "pa11y-ci",
-    "snyk-test": "snyk test",
-    "unit-test": "lab -c -r console -o stdout -r junit -o ./test-output/TEST-$(date '+%Y%m%d-%H%M%S').xml",
-    "all-tests": "npm run test && npm run pa11y-test && npm run snyk-test"
+    "test": "npm run test:unit",
+    "test:lint": "standard",
+    "test:pa11y": "pa11y-ci",
+    "test:snyk": "snyk test",
+    "test:unit": "lab -c -r console -o stdout -r junit -o ./test-output/TEST-$(date '+%Y%m%d-%H%M%S').xml"
   },
   "author": "Defra DDTS",
   "contributors": [

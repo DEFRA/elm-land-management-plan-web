@@ -28,7 +28,7 @@ steps:
 - bash: docker build -t $(containerImage)-pa11y --target=pa11y .
   displayName: Build Pa11y image
 
-- bash: bin/docker/test
+- bash: bin/test
   displayName: Test
   env:
     CONTAINER_IMAGE: $(containerImage)

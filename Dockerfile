@@ -47,7 +47,7 @@ USER node
 
 COPY --chown=node:node --from=development /home/node/ /home/node/
 
-CMD ["npm", "run", "pa11y-test"]
+CMD ["npm", "run", "test:pa11y"]
 
 # Production
 FROM node:${NODE_VERSION}-alpine AS production

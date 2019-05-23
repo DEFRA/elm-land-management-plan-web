@@ -18,25 +18,26 @@ This project expects to be built using continuous integration in Azure Pipelines
 
 # Prerequisites
 
-Node v8+
+## Docker with Kubernetes
 
-For the pa11y tests to run on Ubuntu (including Ubuntu on WSL) the following packages must be installed.
+This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. A configuration is provided in the `kubernetes/` directory to run this application and its dependencies. Use `kubectl` commands to deploy and manage a Kubernetes stack on your local machine. This requires local builds of each application in the stack.
 
-gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+## Connected Services
+
+This application depends on services maintained in other repositories to provide API functionality and data storage. Running this application on a development machine requires each connected service to have been built locally to container images with their default options.
+
+| Service       | URL                                                          | Description |
+|---------------|--------------------------------------------------------------|-------------|
+| `elm-lmp-api` | https://github.com/Matthew-Collins-Defra/elm-api-boilerplate | API service |
 
 # Running the application
 
-This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. Use `kubectl` to run a Kubernetes stack on your local machine.
-
 ```
 # Build container images
-bin/docker/build
+bin/build
 
-# Start NGINX Ingress Controller
-bin/start-ingress
-
-# Deploy app to local cluster
-kubectl apply -f kubernetes/
+# Deploy app and an Nginx Ingress Controller to local Kubernetes
+bin/start
 ```
 
 For more information about the NGINX Ingress Controller, see: `https://kubernetes.github.io/ingress-nginx/`.
@@ -106,34 +107,13 @@ There are lots of [route options](http://hapijs.com/api#route-options), here's t
 
 ## Tasks
 
-Shell scripts are provided in `bin/docker` for building and testing this application using Docker. Specific tasks are declard as NPM scripts in `package.json` and run within short-lived containers so the only dependency on the host system is a running Docker instance.
+Build tasks are maintained as shell scripts in the `bin` directory. These depend largely on Node programs, which are called via `npm-scripts` for simplicity and run in containers so the only direct dependency is Docker.
 
-### NPM Scripts
-
-The predefined tasks from the Defra boilerplate project are:
-
-- `npm run build` (Runs all build sub-tasks)
-- `npm run build:css` (Builds the client-side sass)
-- `npm run lint` (Runs the lint task using standard.js)
-- `npm run unit-test` (Runs the `lab` tests in the `/test` folder)
-- `npm test` (Runs the `lint` task then the `unit-tests`)
-
-Additional tasks for this project are:
-
-- `npm run pa11y-test` (Runs the `pa11y-ci` tests against the urls in the `.pa11yci` file)
-- `npm run snyk-test` (Runs `snyk` tests)
-- `npm run all-tests` (Runs all tests)
-- `npm run start` (Starts the server)
-- `npm run start-quiet` (Starts the server without logging anything to console)
-
-### Resources
-
-For more information around using `npm-scripts` as a build tool:
-
-- http://substack.net/task_automation_with_npm_run
-- http://ponyfoo.com/articles/choose-grunt-gulp-or-npm
-- http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/
-- http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
+| Script      | Description                                                    |
+|-------------|----------------------------------------------------------------|
+| `bin/build` | Build container images                                         |
+| `bin/start` | Deploy app and an Nginx Ingress Controller to local Kubernetes |
+| `bin/test`  | Run automated tests against built container images             |
 
 ## Testing
 
@@ -145,4 +125,4 @@ See the `/test` folder for more information.
 
 [standard.js](http://standardjs.com/) is used to lint both the server-side and client-side javascript code.
 
-It's defined as a build task and can be run using `npm run lint`.
+It's defined as a build task and can be run using `npm run test:lint`.

@@ -16,7 +16,7 @@ test ${result} != 0 && echo "Unit test failed. Exiting." && exit ${result}
 
 # Pa11y
 docker run -d --rm --name web ${CONTAINER_IMAGE}
-docker run --rm --link web:web ${CONTAINER_IMAGE}-pa11y npm run pa11y-test
+docker run --rm --link web:web ${CONTAINER_IMAGE}-pa11y npm run test:pa11y
 result=$?
 docker stop web
 test ${result} != 0 && echo "Pa11y test failed. Exiting." && exit ${result}
