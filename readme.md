@@ -9,6 +9,13 @@ This is the web front end for the Land Management Plan portion of the ELM servic
 | NODE_ENV | Node environment |    no    |         | development,test,production |       |
 | PORT     | Port number      |    no    | 3000    |                             |       |
 
+# Pipeline variables
+This project expects to be built using continuous integration in Azure Pipelines. The pipeline should be configured with the following variables:
+
+| name                   | description                                              |
+|------------------------|----------------------------------------------------------|
+| azureContainerRegistry | Name of Docker image registry connection in Azure DevOps |
+
 # Prerequisites
 
 Node v8+
