@@ -50,8 +50,6 @@ The final config object should be validated using joi and the application should
 
 A table of environment variables should be maintained in this README.
 
-Default values appropriate for development environments are declared in `.env`, which is automatically read by `docker-compose`.
-
 ## Plugins
 
 hapi has a powerful plugin system and all server code should be loaded in a plugin.
