@@ -22,10 +22,10 @@ steps:
     repository: $(repository)
     arguments: -t $(containerImage)
 
-- bash: docker build -t $(containerImage)-development --target=development .
+- bash: docker build --tag ${CONTAINER_IMAGE}-development --target=development .
   displayName: Build development image
 
-- bash: docker build -t $(containerImage)-pa11y --target=pa11y .
+- bash: docker build --tag ${CONTAINER_IMAGE}-pa11y --file ./docker/pa11y.Dockerfile .
   displayName: Build Pa11y image
 
 - bash: bin/test
