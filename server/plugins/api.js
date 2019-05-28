@@ -7,15 +7,10 @@ module.exports = {
     register: (server, options) => {
       server.method({
         name: 'api.getJson',
-        method: async (action) => new Promise(async (resolve, reject) => {
-          try {
-            const url = config.apibase + action
-            const response = await fetch(url)
-            resolve(await response.json())
-          } catch (error) {
-            reject(error)
-          }
-        }),
+        method: async (action) => {
+          const response = await fetch(config.apibase + action)
+          return response.json()
+        },
         options: {}
       })
     }
