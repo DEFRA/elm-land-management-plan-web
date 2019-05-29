@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const request = require('request-promise-native')
 const config = require('../config')
 
 module.exports = {
@@ -6,10 +6,12 @@ module.exports = {
     name: 'api',
     register: (server, options) => {
       server.method({
-        name: 'api.getJson',
+        name: 'api.get',
         method: async (action) => {
-          const response = await fetch(config.apibase + action)
-          return response.json()
+          return await request({
+            json: true,
+            uri: config.apibase + action
+          })
         },
         options: {}
       })
