@@ -12,7 +12,7 @@ lab.experiment('Web test', () => {
   })
 
   lab.test('GET / route works', async () => {
-    server.methods.api.getJson = (requestedUrl) => 1
+    server.methods.api.get = (requestedUrl) => 1
 
     const options = {
       method: 'GET',
