@@ -24,10 +24,10 @@ ENV NODE_ENV development
 
 RUN npm install --loglevel verbose
 
+COPY --chown=node:node index.js /home/node/index.js
 COPY --chown=node:node client/ /home/node/client/
 COPY --chown=node:node server/ /home/node/server/
 COPY --chown=node:node test/ /home/node/test/
-COPY --chown=node:node index.js /home/node/index.js
 
 RUN npm run build
 
