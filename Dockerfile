@@ -36,7 +36,7 @@ FROM base AS production
 
 COPY --chown=node:node --from=base /home/node/package.json /home/node/package-lock.json /home/node/
 COPY --chown=node:node --from=base /home/node/node_modules/ /home/node/node_modules/
-COPY --chown=node:node --from=development /home/node/server/ /home/node/server/
 COPY --chown=node:node --from=development /home/node/index.js /home/node/index.js
+COPY --chown=node:node --from=development /home/node/server/ /home/node/server/
 
 CMD ["node", "index.js"]
