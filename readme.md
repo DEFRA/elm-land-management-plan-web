@@ -12,9 +12,10 @@ This is the web front end for the Land Management Plan portion of the ELM servic
 # Pipeline variables
 This project expects to be built using continuous integration in Azure Pipelines. The pipeline should be configured with the following variables:
 
-| name                   | description                                              |
-|------------------------|----------------------------------------------------------|
-| azureContainerRegistry | Name of Docker image registry connection in Azure DevOps |
+| name                      | description                         |
+|---------------------------|-------------------------------------|
+| azureContainerRegistry    | URL of Azure container registry     |
+| azureSubscriptionEndpoint | Name of Azure subscription endpoint |
 
 # Prerequisites
 

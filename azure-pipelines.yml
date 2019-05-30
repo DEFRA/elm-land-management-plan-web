@@ -14,25 +14,58 @@ variables:
     value: test-output
 
 steps:
-- task: Docker@2
-  displayName: Build production image
+- bash: mkdir test-output/ && chmod 777 test-output/
+  displayName: Create test output folder
+
+- task: DockerCompose@0
+  displayName: Build container images
   inputs:
-    command: build
-    containerRegistry: $(azureContainerRegistry)
-    repository: $(repository)
-    arguments: -t $(containerImage)
+    action: Build services
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker/docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.test.yml
+    dockerComposeFileArgs: |
+      NODE_ENV=production
+      PORT=3000
+    projectName: elm-lmp
+    qualifyImageNames: true
 
-- bash: docker build --tag $(containerImage)-development --target=development .
-  displayName: Build development image
+- task: DockerCompose@0
+  displayName: Unit test
+  inputs:
+    action: Run a specific service
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker/docker-compose.test.yml
+    dockerComposeFileArgs: |
+      NODE_ENV=production
+      PORT=3000
+    projectName: elm-lmp
+    qualifyImageNames: true
+    serviceName: unit-test
+    ports: 3000
+    detached: false
 
-- bash: docker build --tag $(containerImage)-pa11y --file ./docker/pa11y.Dockerfile .
-  displayName: Build Pa11y image
-
-- bash: bin/test
-  displayName: Test
-  env:
-    CONTAINER_IMAGE: $(containerImage)
-    OUTPUT_DIR: $(testOutputDir)
+- task: DockerCompose@0
+  displayName: Pa11y
+  inputs:
+    action: Run a specific service
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker/docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.test.yml
+    dockerComposeFileArgs: |
+      NODE_ENV=production
+      PORT=3000
+    projectName: elm-lmp
+    qualifyImageNames: true
+    serviceName: pa11y
+    ports: 3000
+    detached: false
 
 - task: PublishTestResults@2
   displayName: Publish test results
@@ -42,9 +75,13 @@ steps:
     failTaskOnFailedTests: true
     testRunTitle: Unit-test
 
-- task: Docker@2
-  displayName: Push production image
+- task: DockerCompose@0
+  displayName: Push production images
   inputs:
-    command: push
-    containerRegistry: $(azureContainerRegistry)
-    repository: $(repository)
+    action: Push services
+    containerregistrytype: Azure Container Registry
+    azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
+    azureContainerRegistry: $(azureContainerRegistry)
+    dockerComposeFile: docker/docker-compose.yml
+    projectName: elm-lmp
+    qualifyImageNames: true

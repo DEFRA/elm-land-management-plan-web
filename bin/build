@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 
-test "${CONTAINER_IMAGE}" = "" && CONTAINER_IMAGE="elm-lmp-web:local"
-
-docker build --tag ${CONTAINER_IMAGE} .
-test $? -eq 0 && docker build --tag ${CONTAINER_IMAGE}-development --target=development .
-test $? -eq 0 && docker build --tag ${CONTAINER_IMAGE}-pa11y --file ./docker/pa11y.Dockerfile .
-
-exit $?
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    build \
+    $@

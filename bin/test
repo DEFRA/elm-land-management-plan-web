@@ -1,24 +1,14 @@
 #!/usr/bin/env sh
 
-# Environment variable defaults
-test "${CONTAINER_IMAGE}" = "" && CONTAINER_IMAGE="elm-lmp-web:local"
-test "${OUTPUT_DIR}" = "" && OUTPUT_DIR="test-output"
-
-# Ensure output directory exists and is writable from containers
-outputDirectory="$(pwd)/${OUTPUT_DIR}/"
-test -d "${outputDirectory}" || mkdir "${outputDirectory}"
-chmod 777 "${outputDirectory}"
-
 # Unit tests
-docker run --rm -v "$(pwd)/${OUTPUT_DIR}/:/home/node/${OUTPUT_DIR}/" ${CONTAINER_IMAGE}-development npm run test
-result=$?
-test ${result} != 0 && echo "Unit test failed. Exiting." && exit ${result}
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    run unit-test
 
-# Pa11y
-docker run -d --rm --name web ${CONTAINER_IMAGE}
-docker run --rm --link web:web ${CONTAINER_IMAGE}-pa11y
-result=$?
-docker stop web
-test ${result} != 0 && echo "Pa11y test failed. Exiting." && exit ${result}
-
-exit 0
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    up pa11y
