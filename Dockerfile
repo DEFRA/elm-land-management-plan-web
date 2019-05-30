@@ -20,7 +20,7 @@ FROM base AS development
 
 ENV NODE_ENV development
 
-RUN npm ci --loglevel verbose
+RUN npm install --loglevel verbose
 
 COPY --chown=node:node client/ /home/node/client/
 COPY --chown=node:node server/ /home/node/server/
