@@ -1,3 +1,8 @@
 #!/usr/bin/env sh
 
-npm run build:css
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    build \
+    $@

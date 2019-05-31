@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Unit tests
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    run unit-test
+
+docker-compose \
+    --project-name elm-lmp-app \
+    --file docker/docker-compose.yml \
+    --file docker/docker-compose.test.yml \
+    run pa11y

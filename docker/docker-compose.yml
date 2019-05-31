@@ -1,0 +1,10 @@
+version: "3.4"
+
+services:
+  web:
+    build:
+      args:
+        NODE_ENV: ${NODE_ENV}
+        PORT: ${PORT}
+      context: ../
+      target: production

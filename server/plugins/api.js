@@ -1,18 +1,15 @@
-const fetch = require('node-fetch')
+const request = require('request-promise-native')
+const config = require('../config')
 
 module.exports = {
   plugin: {
     name: 'api',
-    register: (server, options) => {
+    register: (server) => {
       server.method({
-        name: 'api.getJson',
-        method: async (url) => new Promise(async (resolve, reject) => {
-          try {
-            const response = await fetch(url)
-            resolve(await response.json())
-          } catch (error) {
-            reject(error)
-          }
+        name: 'api.get',
+        method: (action) => request({
+          json: true,
+          uri: config.apibase + action
         }),
         options: {}
       })
