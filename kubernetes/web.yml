@@ -50,7 +50,7 @@ spec:
           value: production
         - name: PORT
           value: "3000"
-        image: elm-lmp-web:local
+        image: elm-lmp-app_web:latest
         name: web
         ports:
         - containerPort: 3000

@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
 # Stop and remove app
-kubectl delete -f kubernetes/
+kubectl delete --kustomize kubernetes/
