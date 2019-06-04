@@ -14,7 +14,7 @@ variables:
     value: test-output
 
 steps:
-- bash: mkdir test-output/ && chmod 777 test-output/
+- bash: mkdir $(testOutputDir)/ && chmod 777 $(testOutputDir)/
   displayName: Create test output folder
 
 - task: DockerCompose@0
@@ -69,12 +69,18 @@ steps:
     detached: false
 
 - task: PublishTestResults@2
-  displayName: Publish test results
+  displayName: Publish unit test results
   inputs:
     testResultsFormat: JUnit
-    testResultsFiles: $(testOutputDir)/TEST-*.xml
+    testResultsFiles: $(testOutputDir)/junit.xml
     failTaskOnFailedTests: true
-    testRunTitle: Unit-test
+    testRunTitle: Unit Test
+
+- task: PublishCodeCoverageResults@1
+  displayName: Publish code coverage
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: $(testOutputDir)/cobertura-coverage.xml
 
 - task: DockerCompose@0
   displayName: Push production images

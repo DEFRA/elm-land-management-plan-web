@@ -17,6 +17,5 @@ services:
       target: development
     command: npm run test
     volumes:
-      - "../server/:/home/node/server/"
-      - "../test/:/home/node/test/"
+      - "../.git/:/home/node/.git/"
       - "../test-output/:/home/node/test-output/"
