@@ -24,8 +24,8 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
@@ -39,8 +39,8 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
@@ -57,8 +57,8 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
@@ -89,6 +89,6 @@ steps:
     containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
+    dockerComposeFile: docker-compose.yml
     projectName: elm-lmp
     qualifyImageNames: true

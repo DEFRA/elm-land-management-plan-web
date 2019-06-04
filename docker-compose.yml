@@ -3,7 +3,7 @@ version: "3.4"
 services:
   pa11y:
     build:
-      context: ../
+      context: ./
       dockerfile: ./docker/pa11y.Dockerfile
     depends_on:
       - web
@@ -13,9 +13,17 @@ services:
       args:
         NODE_ENV: development
         PORT: ${PORT}
-      context: ../
+      context: ./
       target: development
     command: npm run test
     volumes:
-      - "../.git/:/home/node/.git/"
-      - "../test-output/:/home/node/test-output/"
+      - "./.git/:/home/node/.git/"
+      - "./test-output/:/home/node/test-output/"
+
+  web:
+    build:
+      args:
+        NODE_ENV: ${NODE_ENV}
+        PORT: ${PORT}
+      context: ./
+      target: production
