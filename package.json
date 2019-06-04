@@ -14,7 +14,7 @@
     "test:snyk": "snyk test",
     "test:unit": "jest",
     "watch:build": "nodemon --exec npm run build --ext scss --legacy-watch",
-    "watch:unit": "jest --watch"
+    "watch:unit": "jest --watch --coverage=false"
   },
   "author": "Defra DDTS",
   "contributors": [
