@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Unit tests
+docker-compose \
+    --project-name elm-lmp-app \
+    run unit-test \
+    npm run watch:unit
