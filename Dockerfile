@@ -22,6 +22,10 @@ FROM base AS development
 
 ENV NODE_ENV development
 
+USER root
+RUN apk update && apk add git
+USER node
+
 RUN npm install --loglevel verbose && npm cache clean --force
 
 COPY --chown=node:node index.js /home/node/index.js
