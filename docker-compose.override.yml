@@ -3,8 +3,13 @@ version: "3.4"
 services:
   web:
     volumes:
-      - "./:/home/node/"
+      - "./index.js:/home/node/index.js"
+      - "./client/:/home/node/client/"
+      - "./server/:/home/node/server/"
 
   unit-test:
     volumes:
-      - "./:/home/node/"
+      - "./index.js:/home/node/index.js"
+      - "./client/:/home/node/client/"
+      - "./server/:/home/node/server/"
+      - "./test/:/home/node/test/"

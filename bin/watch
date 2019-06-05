@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
+test ! "$@" = "" && watcher="$@" || watcher="unit"
+
 # Unit tests
 docker-compose \
     --project-name elm-lmp-app \
     run unit-test \
-    npm run watch:unit
+    npm run watch:${watcher}
