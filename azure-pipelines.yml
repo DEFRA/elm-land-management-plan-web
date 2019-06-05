@@ -14,18 +14,18 @@ variables:
     value: test-output
 
 steps:
-- bash: mkdir test-output/ && chmod 777 test-output/
+- bash: mkdir $(testOutputDir)/ && chmod 777 $(testOutputDir)/
   displayName: Create test output folder
 
 - task: DockerCompose@0
   displayName: Build container images
   inputs:
     action: Build services
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    containerregistrytype: Azure Container Registry
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
@@ -36,53 +36,58 @@ steps:
   displayName: Unit test
   inputs:
     action: Run a specific service
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    containerregistrytype: Azure Container Registry
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
+    detached: false
     projectName: elm-lmp
     qualifyImageNames: true
-    serviceName: unit-test
-    ports: 3000
-    detached: false
+    serviceName: development
+    containerCommand: npm run test
 
 - task: DockerCompose@0
   displayName: Pa11y
   inputs:
     action: Run a specific service
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
-    additionalDockerComposeFiles: docker-compose.test.yml
+    containerregistrytype: Azure Container Registry
+    dockerComposeFile: docker-compose.yml
+    additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
+    detached: false
     projectName: elm-lmp
     qualifyImageNames: true
     serviceName: pa11y
-    ports: 3000
-    detached: false
 
 - task: PublishTestResults@2
-  displayName: Publish test results
+  displayName: Publish unit test results
   inputs:
-    testResultsFormat: JUnit
-    testResultsFiles: $(testOutputDir)/TEST-*.xml
     failTaskOnFailedTests: true
-    testRunTitle: Unit-test
+    testResultsFormat: JUnit
+    testResultsFiles: $(testOutputDir)/junit.xml
+    testRunTitle: Unit Test
+
+- task: PublishCodeCoverageResults@1
+  displayName: Publish code coverage
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: $(testOutputDir)/cobertura-coverage.xml
 
 - task: DockerCompose@0
   displayName: Push production images
   inputs:
     action: Push services
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
-    dockerComposeFile: docker/docker-compose.yml
+    containerregistrytype: Azure Container Registry
+    dockerComposeFile: docker-compose.yml
     projectName: elm-lmp
     qualifyImageNames: true
