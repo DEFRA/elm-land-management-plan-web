@@ -48,7 +48,7 @@ steps:
     projectName: elm-lmp
     qualifyImageNames: true
     serviceName: development
-    command: npm run test
+    containerCommand: npm run test
 
 - task: DockerCompose@0
   displayName: Pa11y
