@@ -45,7 +45,6 @@ steps:
       NODE_ENV=production
       PORT=3000
     detached: false
-    ports: 3000
     projectName: elm-lmp
     qualifyImageNames: true
     serviceName: development
@@ -64,7 +63,6 @@ steps:
       NODE_ENV=production
       PORT=3000
     detached: false
-    ports: 3000
     projectName: elm-lmp
     qualifyImageNames: true
     serviceName: pa11y

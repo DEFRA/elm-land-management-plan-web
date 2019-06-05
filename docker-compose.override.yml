@@ -10,7 +10,7 @@ services:
       target: development
     command: npm run watch:build
     volumes:
-      - "./.git/:/home/node/.git/"
+      - "./.git/:/home/node/.git/" # `jest --watch` requires git
       - "./client/:/home/node/client/"
       - "./server/:/home/node/server/"
       - "./test/:/home/node/test/"
