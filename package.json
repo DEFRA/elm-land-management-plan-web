@@ -1,9 +1,15 @@
 {
   "name": "land-management-plan-web",
-  "version": "1.0.0",
   "description": "ELM Land Management Plan web front end",
-  "main": "index.js",
+  "license": "OGL-UK-3.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/DEFRA/elm-land-management-plan-web",
+  "author": "Defra DDTS",
+  "contributors": [
+    "Matthew Collins <matthew.collins@defra.gov.uk>",
+    "David Bingham <david.bingham@defra.gov.uk>"
+  ],
+  "main": "index.js",
   "scripts": {
     "build": "npm run build:css",
     "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
@@ -16,12 +22,6 @@
     "watch:build": "nodemon --exec npm run build --ext scss --legacy-watch",
     "watch:unit": "jest --coverage=false --onlyChanged --watch"
   },
-  "author": "Defra DDTS",
-  "contributors": [
-    "Matthew Collins <matthew.collins@defra.gov.uk>",
-    "David Bingham <david.bingham@defra.gov.uk>"
-  ],
-  "license": "OGL-UK-3.0",
   "dependencies": {
     "boom": "7.3.0",
     "govuk-frontend": "2.11.0",
