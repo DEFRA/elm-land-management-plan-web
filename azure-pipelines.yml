@@ -21,9 +21,9 @@ steps:
   displayName: Build container images
   inputs:
     action: Build services
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
+    containerregistrytype: Azure Container Registry
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
@@ -36,44 +36,45 @@ steps:
   displayName: Unit test
   inputs:
     action: Run a specific service
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
+    containerregistrytype: Azure Container Registry
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
+    detached: false
+    ports: 3000
     projectName: elm-lmp
     qualifyImageNames: true
-    serviceName: unit-test
-    ports: 3000
-    detached: false
+    serviceName: development
+    command: npm run test
 
 - task: DockerCompose@0
   displayName: Pa11y
   inputs:
     action: Run a specific service
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
+    containerregistrytype: Azure Container Registry
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
       NODE_ENV=production
       PORT=3000
+    detached: false
+    ports: 3000
     projectName: elm-lmp
     qualifyImageNames: true
     serviceName: pa11y
-    ports: 3000
-    detached: false
 
 - task: PublishTestResults@2
   displayName: Publish unit test results
   inputs:
+    failTaskOnFailedTests: true
     testResultsFormat: JUnit
     testResultsFiles: $(testOutputDir)/junit.xml
-    failTaskOnFailedTests: true
     testRunTitle: Unit Test
 
 - task: PublishCodeCoverageResults@1
@@ -86,9 +87,9 @@ steps:
   displayName: Push production images
   inputs:
     action: Push services
-    containerregistrytype: Azure Container Registry
     azureSubscriptionEndpoint: $(azureSubscriptionEndpoint)
     azureContainerRegistry: $(azureContainerRegistry)
+    containerregistrytype: Azure Container Registry
     dockerComposeFile: docker-compose.yml
     projectName: elm-lmp
     qualifyImageNames: true

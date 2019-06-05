@@ -23,7 +23,7 @@ This project expects to be built using continuous integration in Azure Pipelines
 
 This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. A configuration is provided in the `kubernetes/` directory to run this application and its dependencies. Use `kubectl` commands to deploy and manage a Kubernetes stack on your local machine. This requires local builds of each application in the stack.
 
-## Connected Services
+## Connected services
 
 This application depends on services maintained in other repositories to provide API functionality and data storage. Running this application on a development machine requires each connected service to have been built locally to container images with their default options.
 
@@ -51,7 +51,7 @@ bin/stop
 bin/test
 ```
 
-## Ingress Controller
+## Ingress controller
 
 For traffic to reach services running in Kubernetes, an ingress controller is required. If you don't have other projects running specific ingress controllers already, you don't need to worry about this. The `bin/start` script will start an [Nginx Ingress Controller](https://kubernetes.github.io/ingress-nginx) for you.
 
@@ -59,14 +59,32 @@ If you are running other projects in Kubernetes, you should inspect the start sc
 
 ## Tasks
 
-Build tasks are maintained as shell scripts in the `bin` directory. These depend largely on Node programs, which are called via `npm-scripts` for simplicity and run in containers so the only direct dependency is Docker.
+Build tasks are maintained as shell scripts in the `bin` directory. These mostly execute Node programs in containers via `docker-compose` in order to minimise dependencies on the host system. The Node programs are defined as `npm-scripts` in `package.json`.
 
-| Script      | Description                                                    |
-|-------------|----------------------------------------------------------------|
-| `bin/build` | Build container images                                         |
-| `bin/start` | Deploy app and an Nginx Ingress Controller to local Kubernetes |
-| `bin/test`  | Run automated tests against built container images             |
-| `bin/stop`  | Stop and remove app containers from local Kubernetes           |
+| Script        | Description                                                           |
+|---------------|-----------------------------------------------------------------------|
+| `bin/build`   | Build container images                                                |
+| `bin/run x`   | Run an instance of the Docker Compose service named as first argument |
+| `bin/start`   | Deploy app and an Nginx Ingress Controller to local Kubernetes        |
+| `bin/stop`    | Stop and remove app containers from local Kubernetes                  |
+| `bin/test`    | Run automated tests against built container images                    |
+| `bin/watch x` | Run a code watcher (specify `unit` or `build` as argument)            |
+
+## File watching
+
+In development it is often useful to have file watchers automatically run tasks when code changes. The Docker Compose override configuration includes services for this purpose and the `bin/watch` task may be used to initialise specific watchers:
+
+```
+# Run build on source code change
+bin/watch build
+
+# Run unit test watcher
+bin/watch unit
+```
+
+### File watching in Docker
+
+Note that the Jest watcher seems to have issues when running in Docker so you may have to manually trigger test runs via the interactive menu presented by the watcher. Alternatively, you may wish to investigate something like [Docker Windows Notifier](https://github.com/dzek69/docker-windows-notifier) to trigger file change notifications within the development container.
 
 ## Config
 

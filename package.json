@@ -14,7 +14,7 @@
     "test:snyk": "snyk test",
     "test:unit": "jest",
     "watch:build": "nodemon --exec npm run build --ext scss --legacy-watch",
-    "watch:unit": "jest --watch --coverage=false"
+    "watch:unit": "jest --coverage=false --onlyChanged --watch"
   },
   "author": "Defra DDTS",
   "contributors": [
@@ -61,6 +61,7 @@
       "text-summary",
       "cobertura"
     ],
+    "modulePathIgnorePatterns": ["node_modules"],
     "reporters": [
       "default",
       [

@@ -2,8 +2,8 @@
 
 test ! "$@" = "" && watcher="$@" || watcher="unit"
 
-# Unit tests
+# Run the specified watch command in a development container
 docker-compose \
     --project-name elm-lmp-app \
-    run unit-test \
+    run development \
     npm run watch:${watcher}
