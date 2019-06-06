@@ -15,10 +15,10 @@ COPY --chown=node:node package.json package-lock.json /home/node/
 
 RUN npm ci --loglevel verbose && npm cache clean --force
 
-CMD ["node", "index.js"]
-
 # Development
 FROM base AS development
+
+CMD ["npm", "run", "dev"]
 
 ENV NODE_ENV development
 
@@ -37,6 +37,8 @@ RUN npm run build
 
 # Production
 FROM base AS production
+
+CMD ["npm", "run", "start"]
 
 COPY --chown=node:node --from=development /home/node/index.js /home/node/index.js
 COPY --chown=node:node --from=development /home/node/server/ /home/node/server/
