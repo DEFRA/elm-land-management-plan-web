@@ -37,7 +37,7 @@ build:
         dest: .
 
   - image: elm-lmp-api_api
-    context: ../matthew-elm-api-boilerplate/
+    context: ../elm-api-boilerplate/
     docker:
       dockerfile: Dockerfile
       target: production
