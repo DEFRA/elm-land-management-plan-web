@@ -12,6 +12,12 @@ profiles:
   - op: replace
     path: /build/artifacts/0/docker/target
     value: development
+  - op: replace
+    path: /build/artifacts/1/docker/buildArgs/NODE_ENV
+    value: development
+  - op: replace
+    path: /build/artifacts/1/docker/target
+    value: development
 
 build:
   artifacts:
