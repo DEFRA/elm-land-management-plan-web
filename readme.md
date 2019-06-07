@@ -71,7 +71,6 @@ Build tasks are maintained as shell scripts in the `bin` directory. These mostly
 |---------------|--------------------------------------------------------------------------------|
 | `bin/build`   | Build container images                                                         |
 | `bin/dev`     | Run a local development stack                                                  |
-| `bin/run x`   | Run an instance of the Docker Compose service named as first argument          |
 | `bin/test`    | Run automated tests against built container images                             |
 | `bin/watch x` | Run a code watcher (specify `build` or `unit` to build or run tests on change) |
 
