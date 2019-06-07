@@ -23,9 +23,19 @@ This project expects to be built using continuous integration in Azure Pipelines
 
 This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. A configuration is provided in the `kubernetes/` directory to run this application and its dependencies. Use `kubectl` commands to deploy and manage a Kubernetes stack on your local machine. This requires local builds of each application in the stack.
 
+## Ingress controller
+
+This application makes use of [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress) resources in Kubernetes and therefore requires an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers) to be running. Ingress controllers are outside the scope of any one application so the setup of an Ingress controller is left as a pre-requisite for running this application in Kubernetes.
+
+For development, it is recommended to use the [NGINX Ingress controller](https://kubernetes.github.io/ingress-nginx) (the Docker for Mac [setup instructions](https://kubernetes.github.io/ingress-nginx/deploy) also work for WSL on Windows 10).
+
+## Skaffold
+
+[Skaffold](https://skaffold.dev) is used to run this application in development with automatic building and reloading of code changes.
+
 ## Connected services
 
-This application depends on services maintained in other repositories to provide API functionality and data storage. Running this application on a development machine requires each connected service to have been built locally to container images with their default options.
+Connected services must exist in neighbouring directories for Skaffold to run this application. This is because Skaffold builds and runs the entire Kubernetes stack from local files and does not support running services from remote configurations.
 
 | Service       | URL                                                          | Description |
 |---------------|--------------------------------------------------------------|-------------|
@@ -35,21 +45,17 @@ This application depends on services maintained in other repositories to provide
 
 This application builds to a container image which may be run in isolation (for manual testing) or as part of a stack using Kubernetes or Docker Compose.
 
-To run the entire stack, follow build instructions for connected services (in their own repositories), then:
+## Development
+
+Bring up the development stack:
 
 ```
-# Build application container image
-bin/build
-
-# Deploy to local Kubernetes (also starts an ingress controller - see below)
-bin/start
-
-# Stop and remove app containers
-bin/stop
-
-# Run automated tests
-bin/test
+bin/dev
 ```
+
+The above command will attach the command prompt to Skaffold, tailing the container logs for the whole stack.
+
+Press `ctrl + c` to detach and trigger a clean-up of all resources built by Skaffold.
 
 ## Ingress controller
 
@@ -61,14 +67,13 @@ If you are running other projects in Kubernetes, you should inspect the start sc
 
 Build tasks are maintained as shell scripts in the `bin` directory. These mostly execute Node programs in containers via `docker-compose` in order to minimise dependencies on the host system. The Node programs are defined as `npm-scripts` in `package.json`.
 
-| Script        | Description                                                           |
-|---------------|-----------------------------------------------------------------------|
-| `bin/build`   | Build container images                                                |
-| `bin/run x`   | Run an instance of the Docker Compose service named as first argument |
-| `bin/start`   | Deploy app and an Nginx Ingress Controller to local Kubernetes        |
-| `bin/stop`    | Stop and remove app containers from local Kubernetes                  |
-| `bin/test`    | Run automated tests against built container images                    |
-| `bin/watch x` | Run a code watcher (specify `unit` or `build` as argument)            |
+| Script        | Description                                                                    |
+|---------------|--------------------------------------------------------------------------------|
+| `bin/build`   | Build container images                                                         |
+| `bin/dev`     | Run a local development stack                                                  |
+| `bin/run x`   | Run an instance of the Docker Compose service named as first argument          |
+| `bin/test`    | Run automated tests against built container images                             |
+| `bin/watch x` | Run a code watcher (specify `build` or `unit` to build or run tests on change) |
 
 ## File watching
 
@@ -146,15 +151,3 @@ A single route looks like this:
 ```
 
 There are lots of [route options](http://hapijs.com/api#route-options), here's the documentation on [hapi routes](http://hapijs.com/tutorials/routing)
-
-## Testing
-
-[lab](https://github.com/hapijs/lab) and [code](https://github.com/hapijs/code) are used for unit testing.
-
-See the `/test` folder for more information.
-
-## Linting
-
-[standard.js](http://standardjs.com/) is used to lint both the server-side and client-side javascript code.
-
-It's defined as a build task and can be run using `npm run test:lint`.
