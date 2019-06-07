@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-# Ensure elm namespace exists
-kubectl get namespace elm > /dev/null 2>&1 || kubectl create namespace elm
-
-# Deploy app
-kubectl apply --kustomize kubernetes/
