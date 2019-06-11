@@ -24,7 +24,7 @@ RUN npm ci --loglevel verbose && npm cache clean --force
 # Development
 FROM base AS development
 
-CMD ["nodemon", "--ext", "js,njk", "--legacy-watch", "index.js"]
+CMD ["npx", "nodemon", "--ext", "js,njk", "--legacy-watch", "index.js"]
 
 ENV NODE_ENV development
 
