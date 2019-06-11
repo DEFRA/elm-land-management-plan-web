@@ -13,8 +13,6 @@
   "scripts": {
     "build": "npm run build:css",
     "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
-    "dev": "nodemon --ext js,njk --legacy-watch index.js",
-    "start": "node index.js",
     "test": "npm-run-all --parallel test:lint test:unit",
     "test:lint": "standard",
     "test:pa11y": "pa11y-ci",
