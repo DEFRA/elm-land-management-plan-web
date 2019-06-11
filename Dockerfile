@@ -4,12 +4,18 @@ FROM node:10.15.3-alpine AS base
 USER node
 WORKDIR /home/node
 
+ENTRYPOINT ["/sbin/tini", "--"]
+
 ARG NODE_ENV=production
 ENV NODE_ENV ${NODE_ENV}
 
 ARG PORT=3000
 ENV PORT ${PORT}
 EXPOSE ${PORT}
+
+USER root
+RUN apk update && apk add --no-cache tini
+USER node
 
 COPY --chown=node:node package.json package-lock.json /home/node/
 
@@ -18,12 +24,12 @@ RUN npm ci --loglevel verbose && npm cache clean --force
 # Development
 FROM base AS development
 
-CMD ["npm", "run", "dev"]
+CMD ["nodemon", "--ext", "js,njk", "--legacy-watch", "index.js"]
 
 ENV NODE_ENV development
 
 USER root
-RUN apk update && apk add git
+RUN apk update && apk add --no-cache git
 USER node
 
 RUN npm install --loglevel verbose && npm cache clean --force
@@ -38,7 +44,7 @@ RUN npm run build
 # Production
 FROM base AS production
 
-CMD ["npm", "run", "start"]
+CMD ["node", "index.js"]
 
 COPY --chown=node:node --from=development /home/node/index.js /home/node/index.js
 COPY --chown=node:node --from=development /home/node/server/ /home/node/server/
