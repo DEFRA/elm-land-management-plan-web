@@ -27,7 +27,6 @@ steps:
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
-      NODE_ENV=production
       PORT=3000
     projectName: elm-lmp
     qualifyImageNames: true
@@ -42,7 +41,6 @@ steps:
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
-      NODE_ENV=production
       PORT=3000
     detached: false
     projectName: elm-lmp
@@ -60,7 +58,6 @@ steps:
     dockerComposeFile: docker-compose.yml
     additionalDockerComposeFiles: docker-compose.override.yml
     dockerComposeFileArgs: |
-      NODE_ENV=production
       PORT=3000
     detached: false
     projectName: elm-lmp

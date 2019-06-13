@@ -7,13 +7,7 @@ profiles:
   - command: dev
   patches:
   - op: replace
-    path: /build/artifacts/0/docker/buildArgs/NODE_ENV
-    value: development
-  - op: replace
     path: /build/artifacts/0/docker/target
-    value: development
-  - op: replace
-    path: /build/artifacts/1/docker/buildArgs/NODE_ENV
     value: development
   - op: replace
     path: /build/artifacts/1/docker/target
@@ -27,7 +21,6 @@ build:
       dockerfile: Dockerfile
       target: production
       buildArgs:
-        NODE_ENV: production
         PORT: 3000
     sync:
       manual:
@@ -42,7 +35,6 @@ build:
       dockerfile: Dockerfile
       target: production
       buildArgs:
-        NODE_ENV: production
         PORT: 3000
     sync:
       manual:

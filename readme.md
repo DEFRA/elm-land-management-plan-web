@@ -6,7 +6,6 @@ This is the web front end for the Land Management Plan portion of the ELM servic
 
 | name     | description      | required | default |            valid            | notes |
 |----------|------------------|:--------:|---------|:---------------------------:|-------|
-| NODE_ENV | Node environment |    no    |         | development,test,production |       |
 | PORT     | Port number      |    no    | 3000    |                             |       |
 
 # Pipeline variables
@@ -108,7 +107,7 @@ Plugins live in the `server/plugins` directory.
 
 The [good](https://github.com/hapijs/good) and [good-console](https://github.com/hapijs/good-console) plugins are included and configured in `server/plugins/logging`
 
-The logging plugin is only registered in when `NODE_ENV=development`.
+The logging plugin is only registered when running in development.
 
 Error logging for production should use errbit.
 

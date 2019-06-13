@@ -6,8 +6,7 @@ WORKDIR /home/node
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
-ARG NODE_ENV=production
-ENV NODE_ENV ${NODE_ENV}
+ENV NODE_ENV production
 
 ARG PORT=3000
 ENV PORT ${PORT}
