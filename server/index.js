@@ -16,15 +16,18 @@ async function createServer () {
 
   // Register the plugins
   await server.register(require('inert'))
-  await server.register(require('./plugins/views'))
-  await server.register(require('./plugins/router'))
-  await server.register(require('./plugins/error-pages'))
   await server.register(require('./plugins/api'))
+  await server.register(require('./plugins/error-pages'))
+  await server.register(require('./plugins/graceful-stop'))
+  await server.register(require('./plugins/views'))
 
   if (config.isDev) {
     await server.register(require('blipp'))
     await server.register(require('./plugins/logging'))
   }
+
+  // Register router (must come after views plugin)
+  await server.register(require('./plugins/router'))
 
   return server
 }

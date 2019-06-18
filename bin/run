@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-
-# Run an interactive container from the docker-compose configuration
-docker-compose \
-    --project-name elm-lmp-app \
-    run "$@"
