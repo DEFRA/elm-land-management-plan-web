@@ -1,0 +1,5 @@
+container:
+  allowPrivilegeEscalation: true
+  readOnlyRootFilesystem: false
+environment: development
+replicas: 1

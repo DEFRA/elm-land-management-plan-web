@@ -9,7 +9,7 @@ module.exports = {
         name: 'api.get',
         method: (action) => request({
           json: true,
-          uri: config.apibase + action
+          uri: config.apiBase + action
         }),
         options: {}
       })

@@ -4,14 +4,14 @@ const joi = require('joi')
 const schema = {
   port: joi.number().default(3000),
   env: joi.string().valid('development', 'test', 'production').default('development'),
-  apibase: joi.string().default('http://elm-lmp-api:3001/')
+  apiBase: joi.string().default('http://elm-lmp-api:3001/')
 }
 
 // Build config
 const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
-  apibase: process.env.APIBASE
+  apiBase: process.env.API_BASE
 }
 
 // Validate config

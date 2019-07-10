@@ -15,13 +15,11 @@ profiles:
 
 build:
   artifacts:
-  - image: elm-lmp-app_web
+  - image: mccntregistry.azurecr.io/elmlmp_web
     context: .
     docker:
       dockerfile: Dockerfile
       target: production
-      buildArgs:
-        PORT: 3000
     sync:
       manual:
       - src: '**/*.js'
@@ -29,13 +27,11 @@ build:
       - src: '**/*.njk'
         dest: .
 
-  - image: elm-lmp-api_api
+  - image: mccntregistry.azurecr.io/elmlmp_api
     context: ../elm-api-boilerplate/
     docker:
       dockerfile: Dockerfile
       target: production
-      buildArgs:
-        PORT: 3000
     sync:
       manual:
       - src: '**/*.js'
@@ -44,11 +40,16 @@ build:
   local:
     push:
 
+  tagPolicy:
+    sha256: {}
+
 deploy:
-  kubectl:
-    manifests:
-    - kubernetes/api.yml
-    - kubernetes/web.yml
-    remoteManifests:
-    - https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-    - https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+  helm:
+    releases:
+    - name: elm-lmp-web
+      chartPath: helm/elm-lmp-web
+      values:
+        image: mccntregistry.azurecr.io/elmlmp_web
+      valuesFiles:
+      - helm/elm-lmp-web/values.yml
+      - helm/elm-lmp-web/values.dev.yml

@@ -1,0 +1,22 @@
+container:
+  allowPrivilegeEscalation: false
+  imagePullPolicy: IfNotPresent
+  minReadySeconds: 5
+  name: elm-lmp-web
+  redeployOnChange: update this field to force a change
+  requestMemory: 100Mi
+  requestCpu: 50m
+  limitMemory: 200Mi
+  limitCpu: 100m
+  port: 3000
+  runAsNonRoot: true
+  runAsUser: 1000
+  readOnlyRootFilesystem: true
+environment: production
+image: mccntregistry.azurecr.io/elmlmp_web
+ingress:
+  appPath: /elm-demo
+replicas: 2
+service:
+  name: elm-lmp-web
+  port: 80
