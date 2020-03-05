@@ -5,11 +5,11 @@ version: '3.7'
 # ports to the host machine.
 
 services:
-  ffc-demo-web:
+  app:
     build:
       target: development
-    image: ffc-demo-web-development
     command: npm test
+    image: elm-apply-test
     volumes:
       - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/

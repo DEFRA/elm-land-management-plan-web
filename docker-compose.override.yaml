@@ -4,10 +4,10 @@ version: '3.7'
 # to provide dependencies and expose ports for local testing
 
 services:
-  ffc-demo-web:
+  app:
     build:
       target: development
-    image: ffc-demo-web-development
+    image: elm-apply-development
     ports:
       - "3000:3000"
       - "9229:9229"
@@ -18,7 +18,3 @@ services:
       - ./test-output/:/home/node/test-output/
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
-
-  redis:
-    ports:
-      - "6379:6379"

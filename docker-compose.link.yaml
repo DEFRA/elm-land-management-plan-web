@@ -5,13 +5,13 @@ version: '3.7'
 # Dependencies shared with other projects should be started separately.
 
 services:
-  ffc-demo-web:
+  app:
     build:
       target: development
-    image: ffc-demo-web-development
+    image: elm-apply-development
     networks:
-      - default
-      - ffc-demo
+      elm:
+        alias: elm-apply
     ports:
       - "3000:3000"
     volumes:
@@ -23,5 +23,5 @@ services:
       - ./package.json:/home/node/package.json
 
 networks:
-  ffc-demo:
+  elm:
     external: true
