@@ -35,8 +35,8 @@ module.exports = {
     context: {
       appVersion: pkg.version,
       assetPath: '/assets',
-      serviceName: 'FFC Demo Service',
-      pageTitle: 'FFC Demo Service - GOV.UK',
+      serviceName: 'ELM apply service',
+      pageTitle: 'ELM apply service - GOV.UK',
       analyticsAccount: analyticsAccount
     }
   }

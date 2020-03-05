@@ -17,54 +17,35 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">FFC Demo Service</h1>
-
-      <p class="govuk-body">
-        This is a demo application for the technical investigation of patterns and practices
-        in developing production quality containerised, cloud native, microservice based applications
-        within the Future Farming and Countryside Programme (FFC).
-      </p>
-
-      {{ govukWarningText({
-        text: "This is not a real service and is for demonstration and investigation purposes only.",
-        iconFallbackText: "Warning"
-      }) }}
+      <h1 class="govuk-heading-xl">Apply for Environmental Land Management (ELM)</h1>
 
       <p class="govuk-body">Use this example service to:</p>
 
       <ul class="govuk-list govuk-list--bullet">
-        <li>simulate submitting a claim for financial aid if your property is affected by subsidence caused by a mine shaft</li>
+        <li>select environmental actions you want to do on your land</li>
+        <li>calculate the payments you will receive</li>
+        <li>view and confirm your agreement</li>
       </ul>
 
       <p class="govuk-body">Registering takes around 5 minutes.</p>
 
       {{ govukButton({
         classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-8",
-        href: "/claim/property-type",
+        href: "/",
         isStartButton: true,
-        text: "Start new claim"
+        text: "Start now"
       }) }}
 
       <h2 class="govuk-heading-m">Before you start</h2>
 
-      <p class="govuk-body">This is a proof of concept sample application. Actual financial aid is not available.</p>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <aside class="app-related-items" role="complementary">
-        <h2 class="govuk-heading-m" id="subsection-title">
-          Useful links
-        </h2>
-        <nav role="navigation" aria-labelledby="subsection-title">
-          <ul class="govuk-list govuk-!-font-size-16">
-            <li>
-              <a class="govuk-link" href="/clear-session">
-                Clear Session
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </aside>
+      <p class="govuk-body">
+        The quickest way ro apply for Environmental Land Management is online but you can also:
+      </p>
 
+      <ul class="govuk-list govuk-list--bullet">
+        <li><a href="/">apply by phone</a></li>
+        <li>download and complete the <a href="/">Environmental Land Management application form</a> and send it to the <a href="/">Rural Payments Agency</a></li>
+      </ul>
     </div>
   </div>
 {% endblock %}

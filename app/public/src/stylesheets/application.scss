@@ -1,28 +1,5 @@
 @import "node_modules/govuk-frontend/govuk/all";
 
-.nojs-hidden {
-  display: none;
-}
-
-.js-enabled .nojs-hidden {
-  display: block;
-}
-
-.check-your-answers {
-  td {
-    vertical-align: top;
-
-    &.required {
-      color: $govuk-error-colour;
-    }
-  }
-
-  .change-answer {
-    text-align: right;
-    padding-right: 0;
-  }
-}
-
 .govuk-prose-scope {
 
   // @extend inheritance
