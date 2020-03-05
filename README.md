@@ -82,7 +82,7 @@ Container images are built using Docker Compose. They extend FFC parent images s
 
 ```
 # Authenticate with FFC Docker registry (requires pre-configured AWS credentials on your machine)
-aws ecr get-login --no-include-email | sh
+aws ecr get-login-password | docker login --password-stdin --username AWS 171014905211.dkr.ecr.eu-west-2.amazonaws.com
 
 # Build container images
 docker-compose build
