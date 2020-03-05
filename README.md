@@ -1,8 +1,8 @@
-[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-web/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-web?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/elm-apply/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/elm-apply?targetFile=package.json)
 
-# FFC Demo Service
+# ELM application
 
-Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
+Digital service for creation of Environmental Land Management applications.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ Or:
 - Helm
 
 Or:
-- Node 10
+- Node 12
 - Redis
 
 ## Environment variables
@@ -28,14 +28,7 @@ The following environment variables are required by the application container. V
 |---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
 | NODE_ENV                              | Node environment           | no       | development           | development,test,production |
 | PORT                                  | Port number                | no       | 3000                  |                             |
-| CACHE_NAME                            | Cache name                 | no       | redisCache            |                             |
-| REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
-| REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
-| COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
-| API_GATEWAY                           | Url of service API Gateway | no       | http://localhost:3001 |                             |
-| SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
 | STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
-| REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
 
 ## How to run tests
 
@@ -81,48 +74,49 @@ Given that tests can be run in the main app container during development, it may
 
 The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
 
-- A Helm chart is provided for production deployments to Kubernetes.
+- A Helm chart is provided in `./helm` for production deployments to Kubernetes.
 
 ### Build container image
 
-Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
-
-By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
+Container images are built using Docker Compose. They extend FFC parent images so building will fail without access to the private FFC Docker registry.
 
 ```
-# Authenticate with FFC container image registry (requires pre-configured AWS credentials on your machine)
+# Authenticate with FFC Docker registry (requires pre-configured AWS credentials on your machine)
 aws ecr get-login --no-include-email | sh
 
 # Build container images
 docker-compose build
 ```
 
-### Start and stop the service
+The test script will will automatically build (or rebuild) any additional images required to run tests.
 
-Use Docker Compose to run service locally.
+### Running in development
 
-`docker-compose up`
+Use Docker Compose to run service locally in development.
 
-Additional Docker Compose files are provided for scenarios such as linking to other running services.
+Example commands:
 
-Link to other services:
 ```
+# Start the service
+docker-compose up
+
+# Stop the service
+docker-compose down
+
+# Stop the service and remove data volumes
+docker-compose down -v
+```
+
+Additional Docker Compose files are provided for scenarios such as linking to other ELM services running in the same environment.
+
+```
+# Start the service with links to other ELM services
 docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up
 ```
 
-### Deploy to Kubernetes
+### Helm chart
 
-For production deployments, a helm chart is included in the `.\helm` folder. This service connects to an AMQP 1.0 message broker, using credentials defined in [values.yaml](./helm/ffc-demo-web/values.yaml), which must be made available prior to deployment.
-
-Scripts are provided to test the Helm chart by deploying the service, along with an appropriate message broker, into the current Helm/Kubernetes context.
-
-```
-# Deploy to current Kubernetes context
-scripts/helm/install
-
-# Remove from current Kubernetes context
-scripts/helm/delete
-```
+For deployments to Kubernetes, a helm chart is included in the `./helm` folder. The chart is configurable through input values, with defaults defined in `./helm/values.yaml`.
 
 #### Accessing the pod
 
@@ -137,25 +131,28 @@ Alternatively, a local port may be forwarded to the pod:
 
 ```
 # Forward local port to the Kubernetes deployment
-kubectl port-forward --namespace=ffc-demo deployment/ffc-demo-web 3000:3000
+kubectl port-forward --namespace=elm-apply deployment/elm-apply 3000:3000
 ```
-
-Once the port is forwarded or an ingress controller is installed, the service can be accessed and tested in the same way as described in the "Test the service" section above.
 
 #### Probes
 
-The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
+The service has HTTP readiness and liveness probes at the following end points.
 
 Readiness: `/healthy`
 Liveness: `/healthz`
 
 #### Basic Authentication
 
-When deployed with an NGINX Ingress Controller, the ingress may be protected with basic authentication by passing the `--auth` (or `-a`) flag to the [Helm install](./scripts/helm/install) script. This relies on `htpasswd`, which must be available on the host system, and will prompt for a username and password.
+When deployed with an NGINX Ingress Controller, the ingress may be protected with basic authentication by setting the `auth` value to a base64-encoded `htpasswd` output.
+
+For example:
 
 ```
-# Deploy to the current Helm context with basic auth enabled
-scripts/helm/install --auth
+# Create credentials
+credentials=$(htpasswd -n "${username}" | base64)
+
+# Install or upgrade Helm chart with basic auth
+helm upgrade --atomic --install --set auth=${credentials} elm-apply ./helm
 ```
 
 __How basic auth is configured__
@@ -166,14 +163,16 @@ If it wasn't defined by the Helm chart, the secret could be created via the foll
 
 ```
 # Create basic auth secret for username 'defra'
-kubectl create secret generic ffc-demo-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
+kubectl create secret generic elm-apply-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
 ```
 
 #### Amazon Load Balancer
 
 Settings are available in the Helm charts to use the Amazon Load Balancer Ingress Controller rather than an NGINX Ingress Controller.
 Additional child settings below `ingress` are available allowing the user to set [resource tags](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#tags) and the arn of an [SSL certificate](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#certificate-arn), i.e.
+
 ```
+# helm/values.yaml
 ingress:
   alb:
     tags: Name=myservername,Environment=myEnv,Project=MyProject,ServiceType=LOB
@@ -182,36 +181,21 @@ ingress:
 
 ### Running without containers
 
-The application may be run natively on the local operating if a Redis server is available on `localhost:6379`. First build the application using:
+The application may be run natively on the local operating system if a Redis server is available at `localhost:6379`.
 
-`$ npm run build`
+```
+# Build the application
+npm run build
 
-Now the application is ready to run:
-
-`$ node app`
+# Run the application
+node app
+```
 
 ## Build Pipeline
 
-The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
-- Runs unit tests
-- Publishes test result
-- Pushes containers to the registry tagged with the PR number or release version
-- Deploys PRs to a temporary end point for review
-- Deletes PR deployments, containers, and namepace upon merge
+A [`Jenkinsfile`](./Jenkinsfile) is included, which defines the build and test pipeline for this application.
 
-Builds will be deployed into a namespace with the format `ffc-demo-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
-
-The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/ffc-demo-web/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
-
-The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
-
-xx.xx.xx.xx mine-support-pr8.vividcloudsolutions.co.uk
-
-where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
-
-A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
-
-## License
+## Licence
 
 THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
 
