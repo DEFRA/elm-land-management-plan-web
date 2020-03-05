@@ -1,0 +1,24 @@
+version: '3.7'
+
+# This override file should be used when running this service in isolation
+# to provide dependencies and expose ports for local testing
+
+services:
+  ffc-demo-web:
+    build:
+      target: development
+    image: ffc-demo-web-development
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    volumes:
+      - ./.git/:/home/node/.git/ # Git is required by Jest file watcher
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json
+
+  redis:
+    ports:
+      - "6379:6379"

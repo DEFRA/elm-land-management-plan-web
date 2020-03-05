@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-skaffold dev --no-prune

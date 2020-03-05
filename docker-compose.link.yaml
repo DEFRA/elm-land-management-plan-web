@@ -1,0 +1,27 @@
+version: '3.7'
+
+# This override file should be used in development environments to
+# connect this service to sibling services from other repositories.
+# Dependencies shared with other projects should be started separately.
+
+services:
+  ffc-demo-web:
+    build:
+      target: development
+    image: ffc-demo-web-development
+    networks:
+      - default
+      - ffc-demo
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./.git/:/home/node/.git/ # Git is required by Jest file watcher
+      - ./app/:/home/node/app/
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/
+      - ./jest.config.js:/home/node/jest.config.js
+      - ./package.json:/home/node/package.json
+
+networks:
+  ffc-demo:
+    external: true

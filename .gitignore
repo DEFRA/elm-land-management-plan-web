@@ -1,11 +1,11 @@
 .config/
-.DS_Store/
+.DS_Store
 .npm/
 .standard-v12-cache/
-.vscode/
-node_modules/
-server/public/build/
-test-output/
+.vscode
+node_modules
 npm-debug.log
 lcov.info
-TEST-*.xml
+auth
+test-output
+app/public/build
