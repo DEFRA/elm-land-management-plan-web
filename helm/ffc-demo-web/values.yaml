@@ -1,0 +1,47 @@
+environment: development
+image: ffc-demo-web
+name: ffc-demo-web
+namespace: ffc-demo
+auth:
+imagePullSecret:
+service:
+  port: 80
+  type: ClusterIP
+
+container:
+  redisname: redis-redis-ha.default
+  priorityClassName: low
+  imagePullPolicy: IfNotPresent
+  redeployOnChange: update this field to force a change
+  requestMemory: 60Mi
+  requestCpu: 60m
+  limitMemory: 80Mi
+  limitCpu: 80m
+  runAsNonRoot: true
+  runAsUser: 1000
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  apiGatewayUrl: http://ffc-demo-api-gateway.default
+  restartPolicy: Always
+  restClientTimeoutMillis: 20000
+  staticCacheTimeoutMillis: 54000
+ingress:
+  endPoint: ffc-demo
+  server: vividcloudsolutions.co.uk
+replicas: 1
+minReadySeconds: 5
+cookiePassword: passwordpasswordpasswordpasswordpassword
+
+readinessProbe:
+  path: /healthy
+  port: 3000
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3
+
+livenessProbe:
+  path: /healthz
+  port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  failureThreshold: 3

@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  ffc-demo-web:
+    build:
+      context: .
+      target: production
+      args:
+        REGISTRY: ${DOCKER_REGISTRY:-562955126301.dkr.ecr.eu-west-2.amazonaws.com}
+    image: ffc-demo-web
+    depends_on:
+      - redis
+    environment:
+      API_GATEWAY: http://ffc-demo-api-gateway:3001
+      COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
+      REDIS_HOSTNAME: redis
+
+  redis:
+    image: redis
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:

@@ -1,150 +1,228 @@
-# Land Management Plan web front end
-This is the web front end for the Land Management Plan portion of the ELM service
+[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-demo-web/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-demo-web?targetFile=package.json)
 
-# Environment variables
+# FFC Demo Service
 
-| name     | description      | required | default |            valid            | notes |
-|----------|------------------|:--------:|---------|:---------------------------:|-------|
-| PORT     | Port number      |    no    | 3000    |                             |       |
+Digital service mock to claim public money in the event property subsides into mine shaft.  This is the web front end for the application.  It contains a simple claim submission journey where user input data is cached in Redis.  On submission the data is pulled from Redis and passed to the API gateway.
 
-# Pipeline variables
-This project expects to be built using continuous integration in Azure Pipelines. The pipeline should be configured with the following variables:
+## Prerequisites
 
-| name                      | description                         |
-|---------------------------|-------------------------------------|
-| azureContainerRegistry    | URL of Azure container registry     |
-| azureSubscriptionEndpoint | Name of Azure subscription endpoint |
+AWS credentials with access to the container registry where FFC parent images are stored.
 
-# Prerequisites
+Either:
+- Docker
+- Docker Compose
 
-## Docker with Kubernetes
+Or:
+- Kubernetes
+- Helm
 
-This application builds to a Docker image and is intended to run alongside other services in a Kubernetes environment. A configuration is provided in the `kubernetes/` directory to run this application and its dependencies. Use `kubectl` commands to deploy and manage a Kubernetes stack on your local machine. This requires local builds of each application in the stack.
+Or:
+- Node 10
+- Redis
 
-## Ingress controller
+## Environment variables
 
-This application makes use of [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress) resources in Kubernetes and therefore requires an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers) to be running. Ingress controllers are outside the scope of any one application so the setup of an Ingress controller is left as a pre-requisite for running this application in Kubernetes.
+The following environment variables are required by the application container. Values for development are set in the Docker Compose configuration. Default values for production-like deployments are set in the Helm chart and may be overridden by build and release pipelines.
 
-For development, it is recommended to use the [NGINX Ingress controller](https://kubernetes.github.io/ingress-nginx) (the Docker for Mac [setup instructions](https://kubernetes.github.io/ingress-nginx/deploy) also work for WSL on Windows 10).
+| Name                                  | Description                | Required | Default               | Valid                       |
+|---------------------------------------|----------------------------|:--------:|-----------------------|-----------------------------|
+| NODE_ENV                              | Node environment           | no       | development           | development,test,production |
+| PORT                                  | Port number                | no       | 3000                  |                             |
+| CACHE_NAME                            | Cache name                 | no       | redisCache            |                             |
+| REDIS_HOSTNAME                        | Redis host                 | no       | localhost             |                             |
+| REDIS_PORT                            | Redis port                 | no       | 6379                  |                             |
+| COOKIE_PASSWORD                       | Redis cookie password      | yes      |                       |                             |
+| API_GATEWAY                           | Url of service API Gateway | no       | http://localhost:3001 |                             |
+| SESSION_TIMEOUT_IN_MINUTES            | Redis session timeout      | no       | 30                    |                             |
+| STATIC_CACHE_TIMEOUT_IN_MILLIS        | static file cache timeout  | no       | 54000 (15 minutes)    |                             |
+| REST_CLIENT_TIMEOUT_IN_MILLIS         | Rest client timout         | no       | 5000                  |                             |
 
-## Skaffold
+## How to run tests
 
-[Skaffold](https://skaffold.dev) is used to run this application in development with automatic building and reloading of code changes.
+A convenience script is provided to run automated tests in a containerised environment. This will rebuild images before running tests via docker-compose, using a combination of `docker-compose.yaml` and `docker-compose.test.yaml`. The command given to `docker-compose run` may be customised by passing arguments to the test script.
 
-## Connected services
-
-Connected services must exist in neighbouring directories for Skaffold to run this application. This is because Skaffold builds and runs the entire Kubernetes stack from local files and does not support running services from remote configurations.
-
-| Service       | URL                                                          | Description |
-|---------------|--------------------------------------------------------------|-------------|
-| `elm-lmp-api` | https://github.com/Matthew-Collins-Defra/elm-api-boilerplate | API service |
-
-# Running the application
-
-This application builds to a container image which may be run in isolation (for manual testing) or as part of a stack using Kubernetes or Docker Compose.
-
-## Development
-
-Bring up the development stack:
+Examples:
 
 ```
-bin/dev
+# Run all tests
+scripts/test
+
+# Run only unit tests
+scripts/test npm run test:unit
 ```
 
-The above command will attach the command prompt to Skaffold, tailing the container logs for the whole stack.
-
-Press `ctrl + c` to detach and trigger a clean-up of all resources built by Skaffold.
-
-## Ingress controller
-
-For traffic to reach services running in Kubernetes, an ingress controller is required. If you don't have other projects running specific ingress controllers already, you don't need to worry about this. The `bin/start` script will start an [Nginx Ingress Controller](https://kubernetes.github.io/ingress-nginx) for you.
-
-If you are running other projects in Kubernetes, you should inspect the start script to check for conflicts. This application may work fine with other types of ingress controller, they just haven't been tested.
-
-## Tasks
-
-Build tasks are maintained as shell scripts in the `bin` directory. These mostly execute Node programs in containers via `docker-compose` in order to minimise dependencies on the host system. The Node programs are defined as `npm-scripts` in `package.json`.
-
-| Script        | Description                                                                    |
-|---------------|--------------------------------------------------------------------------------|
-| `bin/build`   | Build container images                                                         |
-| `bin/dev`     | Run a local development stack                                                  |
-| `bin/test`    | Run automated tests against built container images                             |
-| `bin/watch x` | Run a code watcher (specify `build` or `unit` to build or run tests on change) |
-
-## File watching
-
-In development it is often useful to have file watchers automatically run tasks when code changes. The Docker Compose override configuration includes services for this purpose and the `bin/watch` task may be used to initialise specific watchers:
+Alternatively, the same tests may be run locally via npm:
 
 ```
-# Run build on source code change
-bin/watch build
-
-# Run unit test watcher
-bin/watch unit
+# Run tests without Docker
+npm run test
 ```
 
-### File watching in Docker
+### Test watcher
 
-Note that the Jest watcher seems to have issues when running in Docker so you may have to manually trigger test runs via the interactive menu presented by the watcher. Alternatively, you may wish to investigate something like [Docker Windows Notifier](https://github.com/dzek69/docker-windows-notifier) to trigger file change notifications within the development container.
+A more convenient way to run tests in development is to use a file watcher to automatically run tests each time associated files are modified. For this purpose, the default docker-compose configuration mounts all app, test and git files into the main `app` container, enabling the test watcher to be run as shown below. The same approach may be used to execute arbitrary commands in the running app.
 
-## Config
+```
+# Run unit test file watcher
+docker-compose exec app npm run test:unit-watch
 
-The configuration file for the server is found at `server/config.js`.
-This is where to put any config and all config should be read from the environment.
-The final config object should be validated using joi and the application should not start otherwise.
+# Run all tests
+docker-compose exec app npm test
 
-A table of environment variables should be maintained in this README.
-
-## Plugins
-
-hapi has a powerful plugin system and all server code should be loaded in a plugin.
-
-Plugins live in the `server/plugins` directory.
-
-## Logging
-
-The [good](https://github.com/hapijs/good) and [good-console](https://github.com/hapijs/good-console) plugins are included and configured in `server/plugins/logging`
-
-The logging plugin is only registered when running in development.
-
-Error logging for production should use errbit.
-
-## Views
-
-The [vison](https://github.com/hapijs/vision) plugin is used for template rendering support.
-
-The template engine used in nunjucks inline with the GDS Design System with support for view caching, layouts, partials and helpers.
-
-## Static files
-
-The [Inert](https://github.com/hapijs/inert) plugin is used for static file and directory handling in hapi.js.
-Put all static assets in `server/public/static`.
-
-Any build output should write to `server/public/build`. This path is in the `.gitignore` and is therefore not checked into source control.
-
-## Routes
-
-Incoming requests are handled by the server via routes.
-Each route describes an HTTP endpoint with a path, method, and other properties.
-
-Routes are found in the `server/routes` directory and loaded using the `server/plugins/router.js` plugin.
-
-Hapi supports registering routes individually or in a batch.
-Each route file can therefore export a single route object or an array of route objects.
-
-A single route looks like this:
-
-```js
-{
-  method: 'GET',
-  path: '/hello-world',
-  options: {
-    handler: (request, h) => {
-      return 'hello world'
-    }
-  }
-}
+# Open an interactive shell in the app container
+docker-compose exec app sh
 ```
 
-There are lots of [route options](http://hapijs.com/api#route-options), here's the documentation on [hapi routes](http://hapijs.com/tutorials/routing)
+### Why docker-compose.test.yaml exists
+
+Given that tests can be run in the main app container during development, it may not be obvious why `docker-compose.test.yaml` exists. It's main purpose is for CI pipelines, where tests need to run in a container without any ports forwarded from the host machine.
+
+## Running the application
+
+The application is designed to run in containerised environments, using Docker Compose in development and Kubernetes in production.
+
+- A Helm chart is provided for production deployments to Kubernetes.
+
+### Build container image
+
+Container images are built using Docker Compose, with the same images used to run the service with either Docker Compose or Kubernetes.
+
+By default, the start script will build (or rebuild) images so there will rarely be a need to build images manually. However, this can be achieved through the Docker Compose [build](https://docs.docker.com/compose/reference/build/) command:
+
+```
+# Authenticate with FFC container image registry (requires pre-configured AWS credentials on your machine)
+aws ecr get-login --no-include-email | sh
+
+# Build container images
+docker-compose build
+```
+
+### Start and stop the service
+
+Use Docker Compose to run service locally.
+
+`docker-compose up`
+
+Additional Docker Compose files are provided for scenarios such as linking to other running services.
+
+Link to other services:
+```
+docker-compose -f docker-compose.yaml -f docker-compose.link.yaml up
+```
+
+### Deploy to Kubernetes
+
+For production deployments, a helm chart is included in the `.\helm` folder. This service connects to an AMQP 1.0 message broker, using credentials defined in [values.yaml](./helm/ffc-demo-web/values.yaml), which must be made available prior to deployment.
+
+Scripts are provided to test the Helm chart by deploying the service, along with an appropriate message broker, into the current Helm/Kubernetes context.
+
+```
+# Deploy to current Kubernetes context
+scripts/helm/install
+
+# Remove from current Kubernetes context
+scripts/helm/delete
+```
+
+#### Accessing the pod
+
+The service is exposed via a Kubernetes ingress, which requires an ingress controller to be running on the cluster. For example, the NGINX Ingress Controller may be installed via Helm:
+
+```
+# Install nginx-ingress into its own namespace
+helm install --namespace nginx-ingress nginx-ingress
+```
+
+Alternatively, a local port may be forwarded to the pod:
+
+```
+# Forward local port to the Kubernetes deployment
+kubectl port-forward --namespace=ffc-demo deployment/ffc-demo-web 3000:3000
+```
+
+Once the port is forwarded or an ingress controller is installed, the service can be accessed and tested in the same way as described in the "Test the service" section above.
+
+#### Probes
+
+The service has both an Http readiness probe and an Http liveness probe configured to receive at the below end points.
+
+Readiness: `/healthy`
+Liveness: `/healthz`
+
+#### Basic Authentication
+
+When deployed with an NGINX Ingress Controller, the ingress may be protected with basic authentication by passing the `--auth` (or `-a`) flag to the [Helm install](./scripts/helm/install) script. This relies on `htpasswd`, which must be available on the host system, and will prompt for a username and password.
+
+```
+# Deploy to the current Helm context with basic auth enabled
+scripts/helm/install --auth
+```
+
+__How basic auth is configured__
+
+Basic authentication is enabled via labels on the ingress object. Those labels are read by the NGINX Ingress Controller and used to configure basic authentication for incoming traffic. One of the labels provides the name of a Kubernetes secret in which credentials are stored as the encoded output of a `htpasswd` command. The ingress controller uses the value of that secret to verify any basic auth attempt.
+
+If it wasn't defined by the Helm chart, the secret could be created via the following command:
+
+```
+# Create basic auth secret for username 'defra'
+kubectl create secret generic ffc-demo-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
+```
+
+#### Amazon Load Balancer
+
+Settings are available in the Helm charts to use the Amazon Load Balancer Ingress Controller rather than an NGINX Ingress Controller.
+Additional child settings below `ingress` are available allowing the user to set [resource tags](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#tags) and the arn of an [SSL certificate](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/#certificate-arn), i.e.
+```
+ingress:
+  alb:
+    tags: Name=myservername,Environment=myEnv,Project=MyProject,ServiceType=LOB
+    arn: arn:aws:acm:eu-west-2:123456:certificate/abcdef0000-123a-4321-abc8-a1234567z
+```
+
+### Running without containers
+
+The application may be run natively on the local operating if a Redis server is available on `localhost:6379`. First build the application using:
+
+`$ npm run build`
+
+Now the application is ready to run:
+
+`$ node app`
+
+## Build Pipeline
+
+The [azure-pipelines.yaml](azure-pipelines.yaml) performs the following tasks:
+- Runs unit tests
+- Publishes test result
+- Pushes containers to the registry tagged with the PR number or release version
+- Deploys PRs to a temporary end point for review
+- Deletes PR deployments, containers, and namepace upon merge
+
+Builds will be deployed into a namespace with the format `ffc-demo-{identifier}` where `{identifier}` is either the release version, the PR number, or the branch name.
+
+The builds will be available at the URL `http://ffc-demo-{identifier}.{ingress-server}`, where `{ingress-server}` is the ingress server defined the [`values.yaml`](./helm/ffc-demo-web/values.yaml),  which is `vividcloudsolutions.co.uk` by default.
+
+The temporary deployment requires a CNAME subdomain wildcard pointing to the public IP address of the ingress controller of the Kubernetes cluster. This can be simulated by updating your local `hosts` file with an entry for the build address set to the ingress controller's public IP address. On windows this would mean adding a line to `C:\Windows\System32\drivers\etc\hosts`, i.e. for PR 8 against the default ingress server this would be
+
+xx.xx.xx.xx mine-support-pr8.vividcloudsolutions.co.uk
+
+where `xx.xx.xx.xx` is the public IP Address of the Ingress Controller.
+
+A detailed description on the build pipeline and PR work flow is available in the [Defra Confluence page](https://eaflood.atlassian.net/wiki/spaces/FFCPD/pages/1281359920/Build+Pipeline+and+PR+Workflow)
+
+## License
+
+THIS INFORMATION IS LICENSED UNDER THE CONDITIONS OF THE OPEN GOVERNMENT LICENCE found at:
+
+<http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3>
+
+The following attribution statement MUST be cited in your products and applications when using this information.
+
+> Contains public sector information licensed under the Open Government license v3
+
+### About the license
+
+The Open Government Licence (OGL) was developed by the Controller of Her Majesty's Stationery Office (HMSO) to enable information providers in the public sector to license the use and re-use of their information under a common open licence.
+
+It is designed to encourage use and re-use of information freely and flexibly, with only a few conditions.
