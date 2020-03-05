@@ -1,11 +1,11 @@
 {
-  "name": "ffc-demo-web",
-  "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "1.0.17",
-  "homepage": "https://github.com/DEFRA/ffc-demo-web",
+  "name": "elm-apply",
+  "description": "Environmental Land Management application",
+  "version": "1.0.0",
+  "homepage": "https://github.com/DEFRA/elm-apply",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DEFRA/ffc-demo-web.git"
+    "url": "https://github.com/DEFRA/elm-apply.git"
   },
   "main": "app/index.js",
   "scripts": {
@@ -22,10 +22,10 @@
   },
   "author": "Defra DDTS",
   "contributors": [
-    "John Watson john.watson2@rpa.gov.uk",
-    "Mark Harrop mark.harrop@defra.gov.uk",
-    "Matthew Collins matthew.collins@defra.gov.uk",
-    "David Bingham david.bingham@defra.gov.uk"
+    "John Watson <john.watson2@rpa.gov.uk>",
+    "Mark Harrop <mark.harrop@defra.gov.uk>",
+    "Matthew Collins <matthew.collins@defra.gov.uk>",
+    "David Bingham <david.bingham@defra.gov.uk>"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
