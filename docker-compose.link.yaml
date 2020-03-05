@@ -11,7 +11,8 @@ services:
     image: elm-apply-development
     networks:
       elm:
-        alias: elm-apply
+        aliases:
+          - elm-apply
     ports:
       - "3000:3000"
     volumes:

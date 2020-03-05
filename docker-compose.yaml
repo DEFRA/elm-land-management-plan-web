@@ -12,4 +12,5 @@ services:
     image: elm-apply
     networks:
       default:
-        alias: elm-apply
+        aliases:
+          - elm-apply
