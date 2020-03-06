@@ -7,7 +7,7 @@ services:
   app:
     build:
       target: development
-    image: elm-apply-development
+    image: ffc-elm-apply-development
     ports:
       - "3000:3000"
       - "9229:9229"

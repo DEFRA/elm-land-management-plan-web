@@ -1,8 +1,8 @@
-[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/elm-apply/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/elm-apply?targetFile=package.json)
+[![Known Vulnerabilities](https://snyk.io//test/github/DEFRA/ffc-elm-apply/badge.svg?targetFile=package.json)](https://snyk.io//test/github/DEFRA/ffc-elm-apply?targetFile=package.json)
 
-# ELM application
+# FFC ELM
 
-Digital service for creation of Environmental Land Management applications.
+Digital service for creating Environmental Land Management applications.
 
 ## Prerequisites
 
@@ -131,7 +131,7 @@ Alternatively, a local port may be forwarded to the pod:
 
 ```
 # Forward local port to the Kubernetes deployment
-kubectl port-forward --namespace=elm-apply deployment/elm-apply 3000:3000
+kubectl port-forward --namespace=ffc-elm-apply deployment/ffc-elm-apply 3000:3000
 ```
 
 #### Probes
@@ -152,7 +152,7 @@ For example:
 credentials=$(htpasswd -n "${username}" | base64)
 
 # Install or upgrade Helm chart with basic auth
-helm upgrade --atomic --install --set auth=${credentials} elm-apply ./helm
+helm upgrade --atomic --install --set auth=${credentials} ffc-elm-apply ./helm
 ```
 
 __How basic auth is configured__
@@ -163,7 +163,7 @@ If it wasn't defined by the Helm chart, the secret could be created via the foll
 
 ```
 # Create basic auth secret for username 'defra'
-kubectl create secret generic elm-apply-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
+kubectl create secret generic ffc-elm-apply-basic-auth2 --from-literal "auth=$(htpasswd -n defra)"
 ```
 
 #### Amazon Load Balancer

@@ -1,7 +1,7 @@
 environment: production
-image: elm-apply
-name: elm-apply
-namespace: elm
+image: ffc-elm-apply
+name: ffc-elm-apply
+namespace: ffc-elm
 auth:
 imagePullSecret: myregistrykey
 
@@ -25,7 +25,7 @@ container:
   staticCacheTimeoutMillis: 54000
 
 ingress:
-  endPoint: elm-apply
+  endPoint: ffc-elm-apply
   server: ffc.aws-int.defra.cloud
 
 replicas: 1

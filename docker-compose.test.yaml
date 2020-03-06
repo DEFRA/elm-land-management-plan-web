@@ -9,7 +9,7 @@ services:
     build:
       target: development
     command: npm test
-    image: elm-apply-test
+    image: ffc-elm-apply-test
     volumes:
       - ./test/:/home/node/test/
       - ./test-output/:/home/node/test-output/

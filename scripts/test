@@ -4,7 +4,7 @@ set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
 command="$@"
-project="elm-apply"
+project="ffc-elm-apply"
 service="app"
 
 compose() {

@@ -9,8 +9,8 @@ services:
         REGISTRY: ${DOCKER_REGISTRY:-171014905211.dkr.ecr.eu-west-2.amazonaws.com}
     environment:
       COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
-    image: elm-apply
+    image: ffc-elm-apply
     networks:
       default:
         aliases:
-          - elm-apply
+          - ffc-elm-apply

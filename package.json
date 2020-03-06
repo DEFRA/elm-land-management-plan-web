@@ -1,11 +1,11 @@
 {
-  "name": "elm-apply",
+  "name": "ffc-elm-apply",
   "description": "Environmental Land Management application",
   "version": "1.0.0",
-  "homepage": "https://github.com/DEFRA/elm-apply",
+  "homepage": "https://github.com/DEFRA/ffc-elm-apply",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DEFRA/elm-apply.git"
+    "url": "https://github.com/DEFRA/ffc-elm-apply.git"
   },
   "main": "app/index.js",
   "scripts": {
