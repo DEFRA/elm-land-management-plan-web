@@ -8,7 +8,7 @@ def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
-def serviceName = 'ffc-demo-web'
+def serviceName = 'elm-apply'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
@@ -52,10 +52,10 @@ node {
       }
       stage('Helm install') {
         withCredentials([
-            string(credentialsId: 'web-alb-tags', variable: 'albTags'),
-            string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'web-alb-arn', variable: 'albArn'),
-            string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
+            string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
+            string(credentialsId: "$serviceName-alb-security-groups", variable: 'albSecurityGroups'),
+            string(credentialsId: "$serviceName-alb-arn", variable: 'albArn'),
+            string(credentialsId: "$serviceName-cookie-password", variable: 'cookiePassword')
           ]) {
 
           def helmValues = [
@@ -64,8 +64,8 @@ node {
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.arn="$albArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint="ffc-demo-$containerTag"/,
-            /name="ffc-demo-$containerTag"/
+            /ingress.endpoint="$serviceName-$containerTag"/,
+            /name="$serviceName-$containerTag"/
           ].join(',')
 
           def extraCommands = [
@@ -74,7 +74,7 @@ node {
           ].join(' ')
 
           defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
-          echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
+          echo "Build available for review at https://$serviceName-$containerTag.$INGRESS_SERVER"
         }
       }
     }
@@ -91,8 +91,8 @@ node {
       }
       stage('Trigger Deployment') {
         withCredentials([
-          string(credentialsId: 'web-deploy-job-name', variable: 'deployJobName'),
-          string(credentialsId: 'web-deploy-token', variable: 'jenkinsToken')
+          string(credentialsId: "$serviceName-deploy-job-name", variable: 'deployJobName'),
+          string(credentialsId: "$serviceName-deploy-token", variable: 'jenkinsToken')
         ]) {
           defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
         }
