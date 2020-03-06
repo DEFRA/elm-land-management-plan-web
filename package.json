@@ -29,20 +29,14 @@
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@hapi/catbox-redis": "^5.0.5",
     "@hapi/hapi": "^18.4.1",
-    "@hapi/hoek": "^8.3.0",
     "@hapi/inert": "^5.2.2",
     "@hapi/joi": "^16.1.7",
     "@hapi/vision": "^5.5.4",
-    "@hapi/wreck": "^15.1.0",
-    "@hapi/yar": "^9.2.1",
     "govuk-frontend": "^3.2.0",
-    "moment": "^2.24.0",
     "nunjucks": "^3.2.0"
   },
   "devDependencies": {
-    "@hapi/catbox-memory": "^4.1.1",
     "@hapi/good": "^8.2.3",
     "@hapi/good-console": "^8.1.2",
     "@hapi/good-squeeze": "^5.2.1",
