@@ -22,6 +22,7 @@ services:
       - ./test-output/:/home/node/test-output/
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
+      - ./package-lock.json:/home/node/package-lock.json
 
 networks:
   ffc-elm:

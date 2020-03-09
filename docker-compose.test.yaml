@@ -16,3 +16,4 @@ services:
       - ./jest.config.js:/home/node/jest.config.js
       - ./jest.setup.js:/home/node/jest.setup.js
       - ./package.json:/home/node/package.json
+      - ./package-lock.json:/home/node/package-lock.json
