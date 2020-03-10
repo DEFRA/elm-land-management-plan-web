@@ -17,14 +17,6 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Debug') {
-      withCredentials([
-          string(credentialsId: "$serviceName-alb-tags", variable: 'albTags')
-      ]) {
-        sh "echo $albTags | base64"
-        exit 1
-      }
-    }
     stage('Set GitHub status as pending') {
       defraUtils.setGithubStatusPending()
     }
