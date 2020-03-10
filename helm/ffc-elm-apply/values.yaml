@@ -1,17 +1,17 @@
-environment: development
-image: ffc-demo-web
-name: ffc-demo-web
-namespace: ffc-demo
+environment: production
+image: ffc-elm-apply
+name: ffc-elm-apply
+namespace: ffc-elm
 auth:
-imagePullSecret:
+imagePullSecret: myregistrykey
+
 service:
-  port: 80
-  type: ClusterIP
+  port: 443
+  type: NodePort
 
 container:
-  redisname: redis-redis-ha.default
   priorityClassName: low
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   redeployOnChange: update this field to force a change
   requestMemory: 60Mi
   requestCpu: 60m
@@ -21,13 +21,13 @@ container:
   runAsUser: 1000
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
-  apiGatewayUrl: http://ffc-demo-api-gateway.default
   restartPolicy: Always
-  restClientTimeoutMillis: 20000
   staticCacheTimeoutMillis: 54000
+
 ingress:
-  endPoint: ffc-demo
-  server: vividcloudsolutions.co.uk
+  endPoint: ffc-elm-apply
+  server: ffc.aws-int.defra.cloud
+
 replicas: 1
 minReadySeconds: 5
 cookiePassword: passwordpasswordpasswordpasswordpassword

@@ -1,11 +1,11 @@
 {
-  "name": "ffc-demo-web",
-  "description": "Digital service mock to claim public money in the event property subsides into mine shaft.",
-  "version": "1.0.17",
-  "homepage": "https://github.com/DEFRA/ffc-demo-web",
+  "name": "ffc-elm-apply",
+  "description": "Environmental Land Management application",
+  "version": "1.0.0",
+  "homepage": "https://github.com/DEFRA/ffc-elm-apply",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DEFRA/ffc-demo-web.git"
+    "url": "https://github.com/DEFRA/ffc-elm-apply.git"
   },
   "main": "app/index.js",
   "scripts": {
@@ -22,27 +22,21 @@
   },
   "author": "Defra DDTS",
   "contributors": [
-    "John Watson john.watson2@rpa.gov.uk",
-    "Mark Harrop mark.harrop@defra.gov.uk",
-    "Matthew Collins matthew.collins@defra.gov.uk",
-    "David Bingham david.bingham@defra.gov.uk"
+    "John Watson <john.watson2@rpa.gov.uk>",
+    "Mark Harrop <mark.harrop@defra.gov.uk>",
+    "Matthew Collins <matthew.collins@defra.gov.uk>",
+    "David Bingham <david.bingham@defra.gov.uk>"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@hapi/catbox-redis": "^5.0.5",
     "@hapi/hapi": "^18.4.1",
-    "@hapi/hoek": "^8.3.0",
     "@hapi/inert": "^5.2.2",
     "@hapi/joi": "^16.1.7",
     "@hapi/vision": "^5.5.4",
-    "@hapi/wreck": "^15.1.0",
-    "@hapi/yar": "^9.2.1",
     "govuk-frontend": "^3.2.0",
-    "moment": "^2.24.0",
     "nunjucks": "^3.2.0"
   },
   "devDependencies": {
-    "@hapi/catbox-memory": "^4.1.1",
     "@hapi/good": "^8.2.3",
     "@hapi/good-console": "^8.1.2",
     "@hapi/good-squeeze": "^5.2.1",

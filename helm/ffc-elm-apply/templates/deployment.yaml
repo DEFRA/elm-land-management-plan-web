@@ -46,12 +46,6 @@ spec:
           value: "3000"
         - name: COOKIE_PASSWORD
           value: {{ quote .Values.cookiePassword }}
-        - name: REDIS_HOSTNAME
-          value: {{ quote .Values.container.redisname }}
-        - name: API_GATEWAY
-          value: {{ quote .Values.container.apiGatewayUrl }}
-        - name: REST_CLIENT_TIMEOUT_IN_MILLIS
-          value: {{ quote .Values.container.restClientTimeoutMillis }}
         - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
           value: {{ quote .Values.container.staticCacheTimeoutMillis }}
         ports:

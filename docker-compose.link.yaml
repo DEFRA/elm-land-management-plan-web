@@ -5,13 +5,14 @@ version: '3.7'
 # Dependencies shared with other projects should be started separately.
 
 services:
-  ffc-demo-web:
+  app:
     build:
       target: development
-    image: ffc-demo-web-development
+    image: ffc-elm-apply-development
     networks:
-      - default
-      - ffc-demo
+      ffc-elm:
+        aliases:
+          - ffc-elm-apply
     ports:
       - "3000:3000"
     volumes:
@@ -21,7 +22,8 @@ services:
       - ./test-output/:/home/node/test-output/
       - ./jest.config.js:/home/node/jest.config.js
       - ./package.json:/home/node/package.json
+      - ./package-lock.json:/home/node/package-lock.json
 
 networks:
-  ffc-demo:
+  ffc-elm:
     external: true
