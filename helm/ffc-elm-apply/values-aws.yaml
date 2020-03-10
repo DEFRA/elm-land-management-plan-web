@@ -1,1 +1,4 @@
 # Value overrides for AWS deployments
+ingress:
+  endPoint: ffc-elm-apply
+  server: ffc-dev.aws-int.defra.cloud

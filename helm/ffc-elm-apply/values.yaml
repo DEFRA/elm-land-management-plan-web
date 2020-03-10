@@ -26,7 +26,7 @@ container:
 
 ingress:
   endPoint: ffc-elm-apply
-  server: ffc.aws-int.defra.cloud
+  server: localhost
 
 replicas: 1
 minReadySeconds: 5
