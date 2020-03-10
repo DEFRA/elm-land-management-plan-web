@@ -17,7 +17,15 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Set GitHub status as pending'){
+    stage('Debug') {
+      withCredentials([
+          string(credentialsId: "$serviceName-alb-tags", variable: 'albTags')
+      ]) {
+        sh "echo $albTags | base64"
+        exit 1
+      }
+    }
+    stage('Set GitHub status as pending') {
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
@@ -32,7 +40,7 @@ node {
     stage('Run tests') {
       defraUtils.runTests(serviceName, dockerTestService, BUILD_NUMBER)
     }
-    stage('Create JUnit report'){
+    stage('Create JUnit report') {
       defraUtils.createTestReportJUnit()
     }
     stage('Fix lcov report') {
@@ -102,7 +110,7 @@ node {
         defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
     }
-    stage('Set GitHub status as success'){
+    stage('Set GitHub status as success') {
       defraUtils.setGithubStatusSuccess()
     }
   } catch(e) {
