@@ -55,13 +55,11 @@ node {
         withCredentials([
             string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
             string(credentialsId: "$serviceName-alb-security-groups", variable: 'albSecurityGroups'),
-            string(credentialsId: "$serviceName-alb-certificate-arn", variable: 'albCertificateArn'),
-            string(credentialsId: "$serviceName-cookie-password", variable: 'cookiePassword')
+            string(credentialsId: "$serviceName-alb-certificate-arn", variable: 'albCertificateArn')
           ]) {
 
           def helmValues = [
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
-            /cookiePassword="$cookiePassword"/,
             /ingress.alb.tags="$albTags"/,
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,

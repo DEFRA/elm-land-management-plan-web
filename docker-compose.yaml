@@ -7,8 +7,6 @@ services:
       target: production
       args:
         REGISTRY: ${DOCKER_REGISTRY:-171014905211.dkr.ecr.eu-west-2.amazonaws.com}
-    environment:
-      COOKIE_PASSWORD: cookiecookiecookiecookiecookiecookie
     image: ffc-elm-apply
     networks:
       default:

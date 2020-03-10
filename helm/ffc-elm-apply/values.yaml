@@ -30,7 +30,6 @@ ingress:
 
 replicas: 1
 minReadySeconds: 5
-cookiePassword: passwordpasswordpasswordpasswordpassword
 
 readinessProbe:
   path: /healthy
