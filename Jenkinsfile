@@ -64,11 +64,11 @@ node {
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.endpoint="$serviceName-$containerTag"/,
+            /ingress.server="$INGRESS_SERVER"/,
             /name="$serviceName-$containerTag"/
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/$serviceName/values-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
