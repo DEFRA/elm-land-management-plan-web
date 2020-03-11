@@ -10,6 +10,7 @@ def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
 def serviceName = 'ffc-elm-apply'
+def serviceNamespace = 'ffc-elm'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
@@ -112,7 +113,7 @@ node {
             "--set $helmValues"
           ].join(' ')
 
-          defraUtils.deployRemoteChart(masterNamespace, serviceName, containerTag, extraCommands)
+          defraUtils.deployRemoteChart(serviceNamespace, serviceName, containerTag, extraCommands)
         }
       }
     }
