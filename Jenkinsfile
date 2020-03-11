@@ -1,4 +1,4 @@
-@Library('defra-library@3.0.0')
+@Library('defra-library@deploy-remote-chart-function')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -88,12 +88,27 @@ node {
           defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
       }
-      stage('Trigger Deployment') {
+      stage('Deploy master') {
         withCredentials([
-          string(credentialsId: "$serviceName-deploy-job-name", variable: 'deployJobName'),
-          string(credentialsId: "$serviceName-deploy-token", variable: 'jenkinsToken')
-        ]) {
-          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
+            string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
+            string(credentialsId: "$serviceName-alb-security-groups", variable: 'albSecurityGroups'),
+            string(credentialsId: "$serviceName-alb-certificate-arn", variable: 'albCertificateArn')
+          ]) {
+
+          def helmValues = [
+            /container.redeployOnChange="$BUILD_NUMBER"/,
+            /ingress.alb.tags="$albTags"/,
+            /ingress.alb.certificateArn="$albCertificateArn"/,
+            /ingress.alb.securityGroups="$albSecurityGroups"/,
+            /ingress.endpoint=$serviceName/,
+            /ingress.server=$INGRESS_SERVER/
+          ].join(',')
+
+          def extraCommands = [
+            "--set $helmValues"
+          ].join(' ')
+
+          defraUtils.deployRemoteChart(masterNamespace, serviceName, containerTag, extraCommands)
         }
       }
     }
