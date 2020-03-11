@@ -23,11 +23,6 @@ node {
     }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
-
-      // Debug: fake a PR merge
-      containerTag = '0.0.1'
-      mergedPrNo = "pr$pr"
-      pr = ''
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
