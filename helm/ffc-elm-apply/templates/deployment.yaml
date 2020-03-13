@@ -44,8 +44,6 @@ spec:
           value: {{ quote .Values.environment }}
         - name: PORT
           value: "3000"
-        - name: COOKIE_PASSWORD
-          value: {{ quote .Values.cookiePassword }}
         - name: STATIC_CACHE_TIMEOUT_IN_MILLIS
           value: {{ quote .Values.container.staticCacheTimeoutMillis }}
         ports:

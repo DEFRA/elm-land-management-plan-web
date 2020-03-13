@@ -1,14 +1,16 @@
-@Library('defra-library@3.0.0')
+@Library('defra-library@3.1.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
 def containerSrcFolder = '\\/home\\/node'
 def containerTag = ''
+def dockerTestService = 'app'
 def lcovFile = './test-output/lcov.info'
 def localSrcFolder = '.'
 def mergedPrNo = ''
 def pr = ''
-def serviceName = 'ffc-demo-web'
+def serviceName = 'ffc-elm-apply'
+def serviceNamespace = 'ffc-elm'
 def sonarQubeEnv = 'SonarQube'
 def sonarScanner = 'SonarScanner'
 def timeoutInMinutes = 5
@@ -16,7 +18,7 @@ def timeoutInMinutes = 5
 node {
   checkout scm
   try {
-    stage('Set GitHub status as pending'){
+    stage('Set GitHub status as pending') {
       defraUtils.setGithubStatusPending()
     }
     stage('Set PR, and containerTag variables') {
@@ -29,9 +31,9 @@ node {
       defraUtils.buildTestImage(DOCKER_REGISTRY_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, BUILD_NUMBER)
     }
     stage('Run tests') {
-      defraUtils.runTests(serviceName, serviceName, BUILD_NUMBER)
+      defraUtils.runTests(serviceName, dockerTestService, BUILD_NUMBER)
     }
-    stage('Create JUnit report'){
+    stage('Create JUnit report') {
       defraUtils.createTestReportJUnit()
     }
     stage('Fix lcov report') {
@@ -52,29 +54,27 @@ node {
       }
       stage('Helm install') {
         withCredentials([
-            string(credentialsId: 'web-alb-tags', variable: 'albTags'),
-            string(credentialsId: 'web-alb-security-groups', variable: 'albSecurityGroups'),
-            string(credentialsId: 'web-alb-arn', variable: 'albArn'),
-            string(credentialsId: 'web-cookie-password', variable: 'cookiePassword')
+            string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
+            string(credentialsId: "$serviceName-alb-security-groups", variable: 'albSecurityGroups'),
+            string(credentialsId: "$serviceName-alb-certificate-arn", variable: 'albCertificateArn')
           ]) {
 
           def helmValues = [
             /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
-            /cookiePassword="$cookiePassword"/,
             /ingress.alb.tags="$albTags"/,
-            /ingress.alb.arn="$albArn"/,
+            /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint="ffc-demo-$containerTag"/,
-            /name="ffc-demo-$containerTag"/
+            /ingress.endpoint="$serviceName-$containerTag"/,
+            /ingress.server="$INGRESS_SERVER"/,
+            /name="$serviceName-$containerTag"/
           ].join(',')
 
           def extraCommands = [
-            "--values ./helm/$serviceName/values-aws.yaml",
             "--set $helmValues"
           ].join(' ')
 
           defraUtils.deployChart(KUBE_CREDENTIALS_ID, DOCKER_REGISTRY, serviceName, containerTag, extraCommands)
-          echo "Build available for review at https://ffc-demo-$containerTag.$INGRESS_SERVER"
+          echo "Build available for review at https://$serviceName-$containerTag.$INGRESS_SERVER"
         }
       }
     }
@@ -89,12 +89,27 @@ node {
           defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
       }
-      stage('Trigger Deployment') {
+      stage('Deploy master') {
         withCredentials([
-          string(credentialsId: 'web-deploy-job-name', variable: 'deployJobName'),
-          string(credentialsId: 'web-deploy-token', variable: 'jenkinsToken')
-        ]) {
-          defraUtils.triggerDeploy(JENKINS_DEPLOY_SITE_ROOT, deployJobName, jenkinsToken, ['chartVersion': containerTag])
+            string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
+            string(credentialsId: "$serviceName-alb-security-groups", variable: 'albSecurityGroups'),
+            string(credentialsId: "$serviceName-alb-certificate-arn", variable: 'albCertificateArn')
+          ]) {
+
+          def helmValues = [
+            /container.redeployOnChange="$BUILD_NUMBER"/,
+            /ingress.alb.tags="$albTags"/,
+            /ingress.alb.certificateArn="$albCertificateArn"/,
+            /ingress.alb.securityGroups="$albSecurityGroups"/,
+            /ingress.endpoint=$serviceName/,
+            /ingress.server=$INGRESS_SERVER/
+          ].join(',')
+
+          def extraCommands = [
+            "--set $helmValues"
+          ].join(' ')
+
+          defraUtils.deployRemoteChart(serviceNamespace, serviceName, containerTag, extraCommands)
         }
       }
     }
@@ -103,7 +118,7 @@ node {
         defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
     }
-    stage('Set GitHub status as success'){
+    stage('Set GitHub status as success') {
       defraUtils.setGithubStatusSuccess()
     }
   } catch(e) {

@@ -18,7 +18,6 @@ Or:
 
 Or:
 - Node 12
-- Redis
 
 ## Environment variables
 
@@ -181,7 +180,7 @@ ingress:
 
 ### Running without containers
 
-The application may be run natively on the local operating system if a Redis server is available at `localhost:6379`.
+The application may be run natively on the local operating system if NPM is installed.
 
 ```
 # Build the application

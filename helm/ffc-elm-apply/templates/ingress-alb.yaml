@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/security-groups: {{ quote .Values.ingress.alb.securityGroups}}
-    alb.ingress.kubernetes.io/certificate-arn: {{ quote .Values.ingress.alb.arn}}
+    alb.ingress.kubernetes.io/certificate-arn: {{ quote .Values.ingress.alb.certificateArn}}
     alb.ingress.kubernetes.io/tags: {{ quote .Values.ingress.alb.tags }}
     external-dns.alpha.kubernetes.io/aws-zone-type-private: "true"
   namespace: {{ quote .Values.namespace }}

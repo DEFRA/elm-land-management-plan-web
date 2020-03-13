@@ -26,11 +26,10 @@ container:
 
 ingress:
   endPoint: ffc-elm-apply
-  server: ffc.aws-int.defra.cloud
+  server: localhost
 
 replicas: 1
 minReadySeconds: 5
-cookiePassword: passwordpasswordpasswordpasswordpassword
 
 readinessProbe:
   path: /healthy
