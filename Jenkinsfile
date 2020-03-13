@@ -1,4 +1,4 @@
-@Library('defra-library@deploy-remote-chart-function')
+@Library('defra-library@3.1.0')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
