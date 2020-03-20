@@ -4,21 +4,22 @@ metadata:
   name: {{ quote .Values.name }}
   namespace: {{ quote .Values.namespace }}
 spec:
-  priorityClassName: {{ quote .Values.container.priorityClassName }}
   replicas: {{ .Values.replicas }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   strategy: {}
   selector:
     matchLabels:
+      app: {{ quote .Values.name }}
       app.kubernetes.io/name: {{ quote .Values.name }}
-      app: {{ quote .Values.namespace }}
   template:
     metadata:
       labels:
         app: {{ quote .Values.name }}
+        app.kubernetes.io/name: {{ quote .Values.name }}
       annotations:
         redeployOnChange: {{ quote .Values.container.redeployOnChange }}
     spec:
+      priorityClassName: {{ quote .Values.container.priorityClassName }}
       restartPolicy: {{ quote .Values.container.restartPolicy }}
       {{- if .Values.imagePullSecret }}
       imagePullSecrets:
