@@ -1,4 +1,4 @@
-@Library('defra-library@3.1.0')
+@Library('defra-library@psd-620-helm-3-upgrade')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
