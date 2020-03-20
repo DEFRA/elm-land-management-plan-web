@@ -23,6 +23,11 @@ node {
     }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
+
+      // Simulate merge to master
+      pr = ''
+      containerTag = '1.0.2'
+      mergedPrNo = '27'
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
