@@ -119,11 +119,11 @@ node {
         }
       }
     }
-    if (mergedPrNo != '') {
+    /*if (mergedPrNo != '') {
       stage('Remove merged PR') {
         defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
-    }
+    }*/
     stage('Set GitHub status as success') {
       defraUtils.setGithubStatusSuccess()
     }
