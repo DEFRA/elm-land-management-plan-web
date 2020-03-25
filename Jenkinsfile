@@ -27,7 +27,7 @@ node {
       // Simulate merge to master
       pr = ''
       containerTag = '1.0.2'
-      mergedPrNo = '27'
+      mergedPrNo = 'pr27'
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
@@ -114,6 +114,7 @@ node {
             "--set $helmValues"
           ].join(' ')
 
+          // 'ffc-elm', 'ffc-elm-apply', '', '--set ' 
           defraUtils.deployRemoteChart(serviceNamespace, serviceName, containerTag, extraCommands)
         }
       }
