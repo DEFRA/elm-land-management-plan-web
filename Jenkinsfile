@@ -23,11 +23,6 @@ node {
     }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
-
-      // Simulate merge to master
-      pr = ''
-      containerTag = '1.0.2'
-      mergedPrNo = 'pr27'
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
@@ -114,16 +109,15 @@ node {
             "--set $helmValues"
           ].join(' ')
 
-          // 'ffc-elm', 'ffc-elm-apply', '', '--set ' 
           defraUtils.deployRemoteChart(serviceNamespace, serviceName, containerTag, extraCommands)
         }
       }
     }
-    /*if (mergedPrNo != '') {
+    if (mergedPrNo != '') {
       stage('Remove merged PR') {
         defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
-    }*/
+    }
     stage('Set GitHub status as success') {
       defraUtils.setGithubStatusSuccess()
     }
