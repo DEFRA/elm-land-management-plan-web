@@ -1,4 +1,4 @@
-@Library('defra-library@4')
+@Library('defra-library@bugfix/PSD-663-deploy-specific-version')
 import uk.gov.defra.ffc.DefraUtils
 def defraUtils = new DefraUtils()
 
@@ -23,6 +23,10 @@ node {
     }
     stage('Set PR, and containerTag variables') {
       (pr, containerTag, mergedPrNo) = defraUtils.getVariables(serviceName, defraUtils.getPackageJsonVersion())
+      // Simulate merge to master
+      pr = ''
+      containerTag = '1.0.1'
+      mergedPrNo = '27'
     }
     stage('Helm lint') {
       defraUtils.lintHelm(serviceName)
@@ -82,13 +86,13 @@ node {
       stage('Publish chart') {
         defraUtils.publishChart(DOCKER_REGISTRY, serviceName, containerTag)
       }
-      stage('Trigger GitHub release') {
+      /* stage('Trigger GitHub release') {
         withCredentials([
           string(credentialsId: 'github-auth-token', variable: 'gitToken')
         ]) {
           defraUtils.triggerRelease(containerTag, serviceName, containerTag, gitToken)
         }
-      }
+      } */
       stage('Deploy master') {
         withCredentials([
             string(credentialsId: "$serviceName-alb-tags", variable: 'albTags'),
@@ -113,11 +117,11 @@ node {
         }
       }
     }
-    if (mergedPrNo != '') {
+    /* if (mergedPrNo != '') {
       stage('Remove merged PR') {
         defraUtils.undeployChart(KUBE_CREDENTIALS_ID, serviceName, mergedPrNo)
       }
-    }
+    } */
     stage('Set GitHub status as success') {
       defraUtils.setGithubStatusSuccess()
     }
