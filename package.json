@@ -16,7 +16,7 @@
     "test": "npm run test:unit",
     "test:lint": "standard",
     "test:unit": "jest",
-    "test:unit-watch": "jest --coverage=false --onlyChanged --watch",
+    "test:unit-watch": "jest --coverage=false --watchAll",
     "start:watch": "npm-run-all --parallel build:css-watch start:nodemon",
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
   },
@@ -33,6 +33,7 @@
     "@hapi/inert": "^5.2.2",
     "@hapi/joi": "^16.1.7",
     "@hapi/vision": "^5.5.4",
+    "@hapi/wreck": "^17.0.0",
     "govuk-frontend": "^3.2.0",
     "nunjucks": "^3.2.0"
   },
