@@ -1,4 +1,4 @@
-describe('GET /business', () => {
+describe('GET /apply', () => {
   let createServer
   let server
 
@@ -18,7 +18,7 @@ describe('GET /business', () => {
   test('returns 200 with HTML payload', async () => {
     const options = {
       method: 'GET',
-      url: '/business'
+      url: '/apply'
     }
 
     const response = await server.inject(options)

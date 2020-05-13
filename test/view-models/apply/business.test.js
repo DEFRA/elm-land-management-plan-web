@@ -1,6 +1,6 @@
 
 describe('getBusinessViewModel', () => {
-  const getBusinessViewModel = require('../../../app/view-models/business/view')
+  const getBusinessViewModel = require('../../../app/view-models/apply/business')
 
   const parcels = [
     { parcelId: 'p1', hectares: 2.43612 },
