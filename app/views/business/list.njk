@@ -10,17 +10,34 @@
     items: [
       {
         text: "Home",
-        href: "#"
-      }]
+        href: "/"
+      },
+      {
+        text: "Select business",
+        href: "/business"
+      }
+    ]
   }) }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">Your Land</h1>
-      {{ govukTable(summaryTableDefinition) }}
-      {{ govukTable(parcelsTableDefinition) }}
+      <h1 class="govuk-heading-xl">Select business</h1>
+
+      <p class="govuk-body">
+        Select from the list below which business you would like to apply for ELM on behalf of.
+      <p>
+
+      <h2 class="govuk-heading-m">
+        Your businesses
+      </h2>
+
+      <ul class="govuk-list">
+      {% for business in businesses %}
+        <a href="/business/{{ business.sbi }}" class="govuk-link">{{ business.sbi }}</a>
+      {% endfor %}
+      </ul>
     </div>
   </div>
 {% endblock %}

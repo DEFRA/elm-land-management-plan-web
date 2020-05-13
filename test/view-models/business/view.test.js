@@ -1,6 +1,6 @@
 
-describe('getBusinessLandViewModel', () => {
-  const getBusinessLandViewModel = require('../../../app/view-models/business/land')
+describe('getBusinessViewModel', () => {
+  const getBusinessViewModel = require('../../../app/view-models/business/view')
 
   const parcels = [
     { parcelId: 'p1', hectares: 2.43612 },
@@ -11,14 +11,20 @@ describe('getBusinessLandViewModel', () => {
   ]
   const sbi = 's1'
 
-  test('returns an object', () => {
-    const result = getBusinessLandViewModel({ parcels, sbi })
+  test('returns an object as the view model', () => {
+    const result = getBusinessViewModel({ parcels, sbi })
 
     expect(typeof result).toBe('object')
   })
 
-  test('returns a parcel table with parcel areas rounded to 4 decimal places', () => {
-    const result = getBusinessLandViewModel({ parcels, sbi })
+  test('includes the provided SBI in the view model', () => {
+    const result = getBusinessViewModel({ parcels, sbi })
+
+    expect(result.sbi).toEqual(sbi)
+  })
+
+  test('includes a parcel table in the view model, with areas rounded to 4 decimal places', () => {
+    const result = getBusinessViewModel({ parcels, sbi })
 
     const expectedParcelsTable = {
       caption: 'Your land parcels',
@@ -39,8 +45,8 @@ describe('getBusinessLandViewModel', () => {
     expect(result.parcelsTableDefinition).toEqual(expectedParcelsTable)
   })
 
-  test('returns a summary table with the SBI and holding area, rounded to 4 decimal places', () => {
-    const result = getBusinessLandViewModel({ parcels, sbi })
+  test('includes a summary table in the view model, with the holding area rounded to 4 decimal places', () => {
+    const result = getBusinessViewModel({ parcels, sbi })
 
     const expectedSummaryTable = {
       caption: 'Your business',

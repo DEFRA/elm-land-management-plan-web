@@ -11,7 +11,7 @@ function sumParcelAreas (parcels) {
   return (milliHectares / milliHectareFactor)
 }
 
-function getBusinessLandViewModel ({ parcels, sbi }) {
+function getBusinessViewModel ({ parcels, sbi }) {
   const parcelsTableDefinition = {
     caption: 'Your land parcels',
     firstCellIsHeader: false,
@@ -44,8 +44,9 @@ function getBusinessLandViewModel ({ parcels, sbi }) {
 
   return {
     parcelsTableDefinition,
+    sbi,
     summaryTableDefinition
   }
 }
 
-module.exports = getBusinessLandViewModel
+module.exports = getBusinessViewModel

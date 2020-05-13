@@ -1,5 +1,6 @@
 const routes = [].concat(
-  require('../routes/business/land'),
+  require('../routes/business'),
+  require('../routes/business/view'),
   require('../routes/home'),
   require('../routes/healthy'),
   require('../routes/healthz'),

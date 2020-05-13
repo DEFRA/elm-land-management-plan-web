@@ -1,4 +1,4 @@
-describe('GET /business/{sbi}/land', () => {
+describe('GET /business/{sbi}', () => {
   const config = require('../../../app/config')
   const restClient = require('../../../app/utils/rest-client')
 
@@ -41,7 +41,7 @@ describe('GET /business/{sbi}/land', () => {
   test('returns 200 with HTML payload', async () => {
     const options = {
       method: 'GET',
-      url: `/business/${sbi}/land`
+      url: `/business/${sbi}`
     }
 
     const response = await server.inject(options)
@@ -52,7 +52,7 @@ describe('GET /business/{sbi}/land', () => {
   test('fetches parcel data from RPA land API', async () => {
     const options = {
       method: 'GET',
-      url: '/business/1/land'
+      url: '/business/1'
     }
 
     await server.inject(options)
