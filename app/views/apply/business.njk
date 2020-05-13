@@ -17,8 +17,8 @@
         href: "/apply"
       },
       {
-        text: sbi,
-        href: "/apply/" + sbi
+        text: business.sbi,
+        href: "/apply/" + business.sbi
       }
     ]
   }) }}
@@ -27,7 +27,7 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">Apply for ELM on behalf of SBI {{ sbi }}</h1>
+      <h1 class="govuk-heading-xl">Apply for ELM on behalf of SBI {{ business.sbi }}</h1>
 
       <p class="govuk-body">
         You have selected to apply for ELM on behalf of the following business. Before you begin building your ELM application, review the information below and confirm that it is correct.

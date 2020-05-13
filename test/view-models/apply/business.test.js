@@ -20,7 +20,7 @@ describe('getBusinessViewModel', () => {
   test('includes the provided SBI in the view model', () => {
     const result = getBusinessViewModel({ parcels, sbi })
 
-    expect(result.sbi).toEqual(sbi)
+    expect(result.business).toEqual({ sbi })
   })
 
   test('includes a parcel table in the view model, with areas rounded to 4 decimal places', () => {

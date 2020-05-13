@@ -44,7 +44,9 @@ function getBusinessViewModel ({ parcels, sbi }) {
 
   return {
     parcelsTableDefinition,
-    sbi,
+    business: {
+      sbi
+    },
     summaryTableDefinition
   }
 }
