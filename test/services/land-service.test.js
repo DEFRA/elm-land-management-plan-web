@@ -1,10 +1,17 @@
 describe('landService', () => {
+  const Boom = require('@hapi/boom')
+
   const config = require('../../app/config')
   const landService = require('../../app/services/land-service')
   const restClient = require('../../app/utils/rest-client')
 
   jest.mock('../../app/utils/rest-client')
 
+  const rpaLandServiceResponseNotFound = {
+    payload: {
+      features: []
+    }
+  }
   const rpaLandServiceResponseOk = {
     payload: {
       features: [
@@ -45,5 +52,53 @@ describe('landService', () => {
     expect(result).toContainEqual({ parcelId: 'p3', hectares: 1.19236 })
     expect(result).toContainEqual({ parcelId: 'p4', hectares: 0.91726 })
     expect(result).toContainEqual({ parcelId: 'p5', hectares: 2.12937 })
+  })
+
+  test('throws a "not found" error if RPA Land Service returns no features', async () => {
+    restClient.get.mockImplementation(() => rpaLandServiceResponseNotFound)
+
+    let thrownError
+
+    try {
+      await landService.getParcels(sbi)
+    } catch (error) {
+      thrownError = error
+    }
+
+    expect(Boom.isBoom(thrownError)).toBe(true)
+    expect(thrownError.output.statusCode).toBe(404)
+    expect(thrownError.output.payload.message).toBe('No parcel data found for requested SBI')
+  })
+
+  test('throws a "failed dependency" error if RPA Land Service errors', async () => {
+    restClient.get.mockImplementation(() => { throw Error() })
+
+    let thrownError
+
+    try {
+      await landService.getParcels(sbi)
+    } catch (error) {
+      thrownError = error
+    }
+
+    expect(Boom.isBoom(thrownError)).toBe(true)
+    expect(thrownError.output.statusCode).toBe(424)
+    expect(thrownError.output.payload.message).toBe('RPA Land Service failed to serve parcel data for the requested SBI')
+  })
+
+  test('throws a "failed dependency" error if RPA Land Service response has no features array', async () => {
+    restClient.get.mockImplementation(() => ({}))
+
+    let thrownError
+
+    try {
+      await landService.getParcels(sbi)
+    } catch (error) {
+      thrownError = error
+    }
+
+    expect(Boom.isBoom(thrownError)).toBe(true)
+    expect(thrownError.output.statusCode).toBe(424)
+    expect(thrownError.output.payload.message).toBe('RPA Land Service gave an invalid response')
   })
 })
