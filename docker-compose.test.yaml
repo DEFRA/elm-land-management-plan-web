@@ -10,7 +10,7 @@ services:
       target: development
     command: npm test
     environment:
-      LOG_REQUESTS: false
+      LOG_REQUESTS: 'false'
     image: ffc-elm-apply-test
     volumes:
       - ./jest.config.js:/home/node/jest.config.js
