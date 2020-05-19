@@ -25,7 +25,7 @@ describe('landService', () => {
   test('getParcels requests data from RPA Land Service API', async (done) => {
     const expectedRequestUrl = `${config.rpaLandServiceUrl}/LandParcels/MapServer/0/query?where=SBI=${sbi}&outFields=*&f=geojson`
 
-    restClient.get.mockImplementation((actualRequestUrl) => {
+    restClient.get.mockImplementation(actualRequestUrl => {
       expect(actualRequestUrl).toBe(expectedRequestUrl)
       done()
       return rpaLandServiceResponseOk
