@@ -12,7 +12,7 @@ if [ "${command}" = "" ]; then
 fi
 
 compose() {
-  docker-compose -p "${project}-test" $@
+  LOG_REQUESTS=false docker-compose -p "${project}-test" $@
 }
 
 (

@@ -1,3 +1,5 @@
+const config = require('../config')
+
 module.exports = {
   plugin: require('@hapi/good'),
   options: {
@@ -13,8 +15,8 @@ module.exports = {
             {
               log: '*',
               error: '*',
-              response: '*',
-              request: '*'
+              request: config.logRequests ? '*' : [''],
+              response: config.logRequests ? '*' : ['']
             }
           ]
         },

@@ -3,6 +3,7 @@ const Joi = require('@hapi/joi')
 // Define config schema
 const schema = Joi.object({
   env: Joi.string().valid('development', 'production').default('development'),
+  logRequests: Joi.string().valid('true', 'false').default('true'),
   port: Joi.number().default(3000),
   rpaLandServiceUrl: Joi.string().default('https://environment.data.gov.uk/arcgis/rest/services/RPA'),
   staticCacheTimeoutMillis: Joi.number().default(15 * 60 * 1000)
@@ -11,6 +12,7 @@ const schema = Joi.object({
 // Build config
 const config = {
   env: process.env.NODE_ENV,
+  logRequests: process.env.LOG_REQUESTS,
   port: process.env.PORT,
   rpaLandServiceUrl: process.env.RPA_LAND_SERVICE_API,
   staticCacheTimeoutMillis: process.env.STATIC_CACHE_TIMEOUT_IN_MILLIS
@@ -28,6 +30,8 @@ if (result.error) {
 
 // Use the Joi validated value
 const value = result.value
+
+value.logRequests = value.logRequests === 'true'
 
 // Add some helper props
 value.isDev = value.env === 'development'
