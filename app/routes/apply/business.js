@@ -1,3 +1,5 @@
+const Joi = require('@hapi/joi')
+
 const getBusinessViewModel = require('../../view-models/apply/business')
 const landService = require('../../services/land-service')
 
@@ -16,6 +18,11 @@ module.exports = {
         console.error(error)
         return h.view('500')
       }
+    },
+    validate: {
+      params: Joi.object({
+        sbi: Joi.string().pattern(/^\d{9}$/).required()
+      })
     }
   }
 }
