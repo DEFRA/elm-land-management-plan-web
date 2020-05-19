@@ -87,7 +87,7 @@ describe('landService', () => {
   })
 
   test('throws a "failed dependency" error if RPA Land Service response has no features array', async () => {
-    restClient.get.mockImplementation(() => ({}))
+    restClient.get.mockImplementation(() => ({ payload: {} }))
 
     let thrownError
 
@@ -99,6 +99,6 @@ describe('landService', () => {
 
     expect(Boom.isBoom(thrownError)).toBe(true)
     expect(thrownError.output.statusCode).toBe(424)
-    expect(thrownError.output.payload.message).toBe('RPA Land Service gave an invalid response')
+    expect(thrownError.output.payload.message).toEqual(expect.stringContaining('RPA Land Service gave an invalid response'))
   })
 })
