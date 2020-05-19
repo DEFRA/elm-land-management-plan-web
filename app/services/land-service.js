@@ -5,10 +5,8 @@ const config = require('../config')
 const restClient = require('../utils/rest-client')
 
 const rpaResponseSchema = Joi.object({
-  payload: Joi.object({
-    features: Joi.array().required()
-  }).required()
-})
+  features: Joi.array().required()
+}).unknown(true)
 
 const getRpaLandServiceUrl = function (entity, sbi) {
   return `${config.rpaLandServiceUrl}/${entity}/MapServer/0/query?where=SBI=${sbi}&outFields=*&f=geojson`
@@ -25,8 +23,9 @@ const landService = {
       throw Boom.failedDependency('RPA Land Service failed to serve parcel data for the requested SBI')
     }
 
-    if (rpaResponseSchema.validate(rpaResponse).error) {
-      throw Boom.failedDependency('RPA Land Service gave an invalid response')
+    const rpaResponseValidation = rpaResponseSchema.validate(rpaResponse.payload)
+    if (rpaResponseValidation.error) {
+      throw Boom.failedDependency('RPA Land Service gave an invalid response: ' + rpaResponseValidation.error)
     }
 
     if (rpaResponse.payload.features.length === 0) {

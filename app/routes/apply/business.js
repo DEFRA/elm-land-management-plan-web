@@ -8,16 +8,11 @@ module.exports = {
   path: '/apply/{sbi}',
   options: {
     handler: async (request, h) => {
-      try {
-        const { sbi } = request.params
+      const { sbi } = request.params
 
-        const parcels = await landService.getParcels(sbi)
+      const parcels = await landService.getParcels(sbi)
 
-        return h.view('apply/business', getBusinessViewModel({ parcels, sbi }))
-      } catch (error) {
-        console.error(error)
-        return h.view('500')
-      }
+      return h.view('apply/business', getBusinessViewModel({ parcels, sbi }))
     },
     validate: {
       params: Joi.object({
