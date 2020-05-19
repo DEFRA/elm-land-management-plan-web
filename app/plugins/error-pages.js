@@ -13,11 +13,12 @@ module.exports = {
           // An error was raised during
           // processing the request
           const statusCode = response.output.statusCode
+          const message = response.output.payload.message
 
           // In the event of 404
           // return the `404` view
           if (statusCode === 404) {
-            return h.view('404').code(statusCode)
+            return h.view('404', { message }).code(statusCode)
           }
 
           request.log('error', {
