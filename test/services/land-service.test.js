@@ -71,7 +71,9 @@ describe('landService', () => {
   })
 
   test('throws a "failed dependency" error if RPA Land Service errors', async () => {
-    restClient.get.mockImplementation(() => { throw Error() })
+    restClient.get.mockImplementation(() => {
+      throw Error()
+    })
 
     let thrownError
 

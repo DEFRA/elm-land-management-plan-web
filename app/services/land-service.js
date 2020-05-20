@@ -25,7 +25,7 @@ const landService = {
 
     const rpaResponseValidation = rpaResponseSchema.validate(rpaResponse.payload)
     if (rpaResponseValidation.error) {
-      throw Boom.failedDependency('RPA Land Service gave an invalid response: ' + rpaResponseValidation.error)
+      throw Boom.failedDependency(`RPA Land Service gave an invalid response: ${rpaResponseValidation.error}`)
     }
 
     if (rpaResponse.payload.features.length === 0) {
