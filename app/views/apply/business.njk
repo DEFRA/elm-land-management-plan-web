@@ -1,0 +1,41 @@
+{% extends 'layout.njk' %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Apply for ELM",
+        href: "/apply"
+      },
+      {
+        text: business.sbi,
+        href: "/apply/" + business.sbi
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Apply for ELM on behalf of SBI {{ business.sbi }}</h1>
+
+      <p class="govuk-body">
+        You have selected to apply for ELM on behalf of the following business. Before you begin building your ELM application, review the information below and confirm that it is correct.
+      <p>
+
+      {{ govukTable(summaryTableDefinition) }}
+
+      {{ govukTable(parcelsTableDefinition) }}
+    </div>
+  </div>
+{% endblock %}

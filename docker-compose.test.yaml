@@ -9,11 +9,11 @@ services:
     build:
       target: development
     command: npm test
+    environment:
+      LOG_REQUESTS: 'false'
     image: ffc-elm-apply-test
     volumes:
-      - ./test/:/home/node/test/
-      - ./test-output/:/home/node/test-output/
       - ./jest.config.js:/home/node/jest.config.js
       - ./jest.setup.js:/home/node/jest.setup.js
-      - ./package.json:/home/node/package.json
-      - ./package-lock.json:/home/node/package-lock.json
+      - ./test/:/home/node/test/
+      - ./test-output/:/home/node/test-output/

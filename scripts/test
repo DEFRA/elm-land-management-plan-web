@@ -7,12 +7,12 @@ command="$@"
 project="ffc-elm-apply"
 service="app"
 
+if [ "${command}" = "" ]; then
+  command="npm test"
+fi
+
 compose() {
-  docker-compose \
-    -f docker-compose.yaml \
-    -f docker-compose.test.yaml \
-    -p "${project}-test" \
-    $@
+  LOG_REQUESTS=false docker-compose -p "${project}-test" $@
 }
 
 (
