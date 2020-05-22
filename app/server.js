@@ -14,9 +14,6 @@ async function createServer () {
     }
   })
 
-  console.log('This is an intentionally' + ' ' +
-    'pointless and poorly constructed log message to test SonarCloud')
-
   // Register plugins
   await server.register(require('@hapi/inert'))
   await server.register(require('./plugins/views'))
