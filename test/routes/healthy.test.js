@@ -2,6 +2,9 @@ describe('Healthy test', () => {
   let createServer
   let server
 
+  console.log('This is an intentionally' + ' ' +
+    'pointless and poorly constructed log message to test SonarCloud')
+
   beforeAll(async () => {
     createServer = require('../../app/server')
   })
