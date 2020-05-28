@@ -4,7 +4,22 @@ describe('GET /apply/{sbi}', () => {
 
   jest.mock('../../../app/utils/rest-client')
 
+  const today = new Date().toISOString().slice(0, 10)
   const validSbi = '123456789'
+  const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${validSbi}?date=${today}`
+  const getExistingSchemesResponse = {
+    headers: {
+      statusCode: 200
+    },
+    payload: [
+      {
+        sbi: validSbi,
+        schemeId: 's1',
+        dateStart: '2017-08-01',
+        dateEnd: '2019-01-01'
+      }
+    ]
+  }
   const getParcelsUrl = `${config.rpaLandServiceUrl}/LandParcels/MapServer/0/query?where=SBI=${validSbi}&outFields=*&f=geojson`
   const getParcelsResponse = {
     payload: {
@@ -27,7 +42,18 @@ describe('GET /apply/{sbi}', () => {
   })
 
   beforeEach(async () => {
-    restClient.get.mockImplementation(() => getParcelsResponse)
+    restClient.get.mockImplementation(url => {
+      switch (url) {
+        case getParcelsUrl:
+          return getParcelsResponse
+
+        case getExistingSchemesUrl:
+          return getExistingSchemesResponse
+
+        default:
+          throw Error('restClient.get was called with an unexpected URL')
+      }
+    })
 
     server = await createServer()
     await server.initialize()
@@ -38,15 +64,14 @@ describe('GET /apply/{sbi}', () => {
     await server.stop()
   })
 
-  test('returns 200 with HTML payload', async () => {
+  test('fetches existing schemes data from compliance API', async () => {
     const options = {
       method: 'GET',
       url: `/apply/${validSbi}`
     }
 
-    const response = await server.inject(options)
-    expect(response.statusCode).toBe(200)
-    expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
+    await server.inject(options)
+    expect(restClient.get).toHaveBeenCalledWith(getExistingSchemesUrl)
   })
 
   test('fetches parcel data from RPA land API', async () => {
@@ -57,6 +82,17 @@ describe('GET /apply/{sbi}', () => {
 
     await server.inject(options)
     expect(restClient.get).toHaveBeenCalledWith(getParcelsUrl)
+  })
+
+  test('returns 200 with HTML payload if SBI is valid', async () => {
+    const options = {
+      method: 'GET',
+      url: `/apply/${validSbi}`
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(200)
+    expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
   })
 
   test('rejects SBI of length other than 9 characters', async () => {

@@ -11,7 +11,22 @@ function sumParcelAreas (parcels) {
   return (milliHectares / milliHectareFactor)
 }
 
-function getBusinessViewModel ({ parcels, sbi }) {
+function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
+  const existingSchemesTableDefinition = {
+    caption: 'Your existing schemes',
+    firstCellIsHeader: false,
+    head: [
+      { text: 'Scheme ID' },
+      { text: 'Start date' },
+      { text: 'End date' }
+    ],
+    rows: existingSchemes.map(agreement => ([
+      { text: agreement.schemeId },
+      { text: agreement.dateStart },
+      { text: agreement.dateEnd }
+    ]))
+  }
+
   const parcelsTableDefinition = {
     caption: 'Your land parcels',
     firstCellIsHeader: false,
@@ -43,6 +58,7 @@ function getBusinessViewModel ({ parcels, sbi }) {
   }
 
   return {
+    existingSchemesTableDefinition,
     business: {
       sbi
     },

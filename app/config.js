@@ -2,6 +2,7 @@ const Joi = require('@hapi/joi')
 
 // Define config schema
 const schema = Joi.object({
+  complianceServiceUrl: Joi.string().default('http://host.docker.internal:3004'),
   env: Joi.string().valid('development', 'production').default('development'),
   logRequests: Joi.string().valid('true', 'false').default('true'),
   port: Joi.number().default(3000),
@@ -11,6 +12,7 @@ const schema = Joi.object({
 
 // Build config
 const config = {
+  complianceServiceUrl: process.env.COMPLIANCE_SERVICE_URL,
   env: process.env.NODE_ENV,
   logRequests: process.env.LOG_REQUESTS,
   port: process.env.PORT,
