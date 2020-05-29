@@ -1,6 +1,7 @@
 const Boom = require('@hapi/boom')
 const Joi = require('@hapi/joi')
 
+const complianceData = require('../data/compliance.json')
 const config = require('../config')
 const restClient = require('../utils/rest-client')
 
@@ -27,26 +28,7 @@ const landService = {
           headers: {
             statusCode: 200
           },
-          payload: [
-            {
-              sbi: sbi,
-              schemeId: 's1',
-              dateStart: '2014-08-01',
-              dateEnd: '2019-01-01'
-            },
-            {
-              sbi: sbi,
-              schemeId: 's2',
-              dateStart: '2018-01-01',
-              dateEnd: '2021-01-01'
-            },
-            {
-              sbi: sbi,
-              schemeId: 's3',
-              dateStart: '2019-08-01',
-              dateEnd: '2022-08-01'
-            }
-          ]
+          payload: complianceData[sbi] || []
         }
       } else {
         complianceResponse = await restClient.get(existingSchemesUrl)

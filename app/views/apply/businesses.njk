@@ -15,6 +15,10 @@
       {
         text: "Apply for ELM",
         href: "/apply"
+      },
+      {
+        text: "Select business",
+        href: "/apply/businesses"
       }
     ]
   }) }}
@@ -35,7 +39,7 @@
 
       <ul class="govuk-list">
       {% for business in businesses %}
-        <a href="/apply/{{ business.sbi }}" class="govuk-link">{{ business.sbi }}</a>
+        <li><a href="/apply/businesses/{{ business.sbi }}" class="govuk-link">{{ business.sbi }} - {{ business.name }}</a></li>
       {% endfor %}
       </ul>
     </div>

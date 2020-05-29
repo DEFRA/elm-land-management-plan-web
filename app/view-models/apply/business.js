@@ -51,7 +51,7 @@ function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
         { text: sbi }
       ],
       [
-        { text: 'Total holdings' },
+        { text: 'Registered holdings' },
         { text: `${holdingHectares} ha` }
       ]
     ]

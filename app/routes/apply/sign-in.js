@@ -7,7 +7,7 @@ module.exports = {
         const businesses = [
           { sbi: 106599008 }
         ]
-        return h.view('apply/select-business', { businesses })
+        return h.view('apply/sign-in', { businesses })
       } catch (error) {
         console.error(error)
         return h.view('500')

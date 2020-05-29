@@ -76,7 +76,7 @@ describe('getBusinessViewModel', () => {
       firstCellIsHeader: true,
       rows: [
         [{ text: 'SBI' }, { text: sbi }],
-        [{ text: 'Total holdings' }, { text: '10.5517 ha' }]
+        [{ text: 'Registered holdings' }, { text: '10.5517 ha' }]
       ]
     }
 

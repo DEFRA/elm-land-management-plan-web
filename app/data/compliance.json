@@ -1,0 +1,22 @@
+{
+  "106599008": [
+    {
+      "sbi": "sbi",
+      "schemeId": "s1",
+      "dateStart": "2014-08-01",
+      "dateEnd": "2019-01-01"
+    },
+    {
+      "sbi": "sbi",
+      "schemeId": "s2",
+      "dateStart": "2018-01-01",
+      "dateEnd": "2021-01-01"
+    },
+    {
+      "sbi": "sbi",
+      "schemeId": "s3",
+      "dateStart": "2019-08-01",
+      "dateEnd": "2022-08-01"
+    }
+  ]
+}

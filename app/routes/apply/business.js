@@ -1,12 +1,12 @@
 const Joi = require('@hapi/joi')
 
-const getBusinessViewModel = require('../../view-models/apply/business')
 const complianceService = require('../../services/compliance-service')
+const getBusinessViewModel = require('../../view-models/apply/business')
 const landService = require('../../services/land-service')
 
 module.exports = {
   method: 'GET',
-  path: '/apply/{sbi}',
+  path: '/apply/businesses/{sbi}',
   options: {
     handler: async (request, h) => {
       const { sbi } = request.params

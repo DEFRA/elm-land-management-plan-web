@@ -1,4 +1,4 @@
-describe('GET /apply/{sbi}', () => {
+describe('GET /apply/businesses/{sbi}', () => {
   const config = require('../../../app/config')
   const restClient = require('../../../app/utils/rest-client')
 
@@ -67,7 +67,7 @@ describe('GET /apply/{sbi}', () => {
   test('fetches existing schemes data from compliance API', async () => {
     const options = {
       method: 'GET',
-      url: `/apply/${validSbi}`
+      url: `/apply/businesses/${validSbi}`
     }
 
     await server.inject(options)
@@ -77,7 +77,7 @@ describe('GET /apply/{sbi}', () => {
   test('fetches parcel data from RPA land API', async () => {
     const options = {
       method: 'GET',
-      url: `/apply/${validSbi}`
+      url: `/apply/businesses/${validSbi}`
     }
 
     await server.inject(options)
@@ -87,7 +87,7 @@ describe('GET /apply/{sbi}', () => {
   test('returns 200 with HTML payload if SBI is valid', async () => {
     const options = {
       method: 'GET',
-      url: `/apply/${validSbi}`
+      url: `/apply/businesses/${validSbi}`
     }
 
     const response = await server.inject(options)
@@ -104,7 +104,7 @@ describe('GET /apply/{sbi}', () => {
     for (const invalidSbi of invalidSbis) {
       const options = {
         method: 'GET',
-        url: `/apply/${invalidSbi}`
+        url: `/apply/businesses/${invalidSbi}`
       }
 
       const response = await server.inject(options)
@@ -121,7 +121,7 @@ describe('GET /apply/{sbi}', () => {
       const invalidSbi = disallowedCharacter.concat(validSbi.slice(1))
       const options = {
         method: 'GET',
-        url: `/apply/${invalidSbi}`
+        url: `/apply/businesses/${invalidSbi}`
       }
 
       const response = await server.inject(options)
