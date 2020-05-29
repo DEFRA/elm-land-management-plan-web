@@ -5,7 +5,7 @@ describe('GET /apply/businesses/{sbi}', () => {
   jest.mock('../../../app/utils/rest-client')
 
   const today = new Date().toISOString().slice(0, 10)
-  const validSbi = '123456789'
+  const validSbi = '106599008'
   const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${validSbi}?date=${today}`
   const getExistingSchemesResponse = {
     headers: {
@@ -91,6 +91,7 @@ describe('GET /apply/businesses/{sbi}', () => {
     }
 
     const response = await server.inject(options)
+
     expect(response.statusCode).toBe(200)
     expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
   })

@@ -11,7 +11,7 @@ function sumParcelAreas (parcels) {
   return (milliHectares / milliHectareFactor)
 }
 
-function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
+function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parcels }) {
   const existingSchemesTableDefinition = existingSchemes.length === 0 ? undefined : {
     caption: 'Your existing schemes',
     firstCellIsHeader: false,
@@ -64,6 +64,7 @@ function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
   return {
     existingSchemesTableDefinition,
     business: {
+      name,
       sbi
     },
     parcelsTableDefinition,

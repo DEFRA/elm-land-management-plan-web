@@ -1,6 +1,10 @@
 describe('getBusinessViewModel', () => {
   const getBusinessViewModel = require('../../../app/view-models/apply/business')
 
+  const business = {
+    name: 'High farm',
+    sbi: '106599008'
+  }
   const existingSchemes = [
     { schemeId: 's1', dateStart: '2020-01-01', dateEnd: '2021-01-01' },
     { schemeId: 's2', dateStart: '2018-08-01', dateEnd: '2020-08-01' }
@@ -12,22 +16,22 @@ describe('getBusinessViewModel', () => {
     { parcelId: 'p4', hectares: 0.91726 },
     { parcelId: 'p5', hectares: 2.12937 }
   ]
-  const sbi = 's1'
+  const sbi = business.sbi
 
   test('returns an object as the view model', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels })
 
     expect(typeof result).toBe('object')
   })
 
-  test('includes the provided SBI in the view model', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
+  test('includes the provided business details in the view model', () => {
+    const result = getBusinessViewModel({ business, existingSchemes, parcels })
 
-    expect(result.business).toEqual({ sbi })
+    expect(result.business).toEqual(business)
   })
 
   test('includes an existing schemes table in the view model', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels })
 
     const expectedParcelsTable = {
       caption: 'Your existing schemes',
@@ -47,12 +51,12 @@ describe('getBusinessViewModel', () => {
   })
 
   test('excludes the schemes table in the view model if no schemes are given', () => {
-    const result = getBusinessViewModel({ existingSchemes: [], parcels, sbi })
+    const result = getBusinessViewModel({ business, existingSchemes: [], parcels })
     expect(result.schemesTableDefinition).toEqual(undefined)
   })
 
   test('includes a parcel table in the view model, with areas rounded to 4 decimal places', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels })
 
     const expectedParcelsTable = {
       caption: 'Your land parcels',
@@ -74,12 +78,12 @@ describe('getBusinessViewModel', () => {
   })
 
   test('excludes the parcel table in the view model if no parcels are given', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels: [], sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels: [] })
     expect(result.parcelsTableDefinition).toEqual(undefined)
   })
 
   test('includes a summary table in the view model, with the holding area rounded to 4 decimal places', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels })
 
     const expectedSummaryTable = {
       caption: 'Your business',
@@ -95,7 +99,7 @@ describe('getBusinessViewModel', () => {
   })
 
   test('displays holdings as None in the summary table if the holding area is zero', () => {
-    const result = getBusinessViewModel({ existingSchemes, parcels: [], sbi })
+    const result = getBusinessViewModel({ business, existingSchemes, parcels: [] })
 
     const expectedSummaryTable = {
       caption: 'Your business',
