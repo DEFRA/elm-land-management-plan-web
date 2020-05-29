@@ -12,7 +12,7 @@ function sumParcelAreas (parcels) {
 }
 
 function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
-  const existingSchemesTableDefinition = {
+  const existingSchemesTableDefinition = existingSchemes.length === 0 ? undefined : {
     caption: 'Your existing schemes',
     firstCellIsHeader: false,
     head: [
@@ -27,7 +27,7 @@ function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
     ]))
   }
 
-  const parcelsTableDefinition = {
+  const parcelsTableDefinition = parcels.length === 0 ? undefined : {
     caption: 'Your land parcels',
     firstCellIsHeader: false,
     head: [
@@ -52,7 +52,11 @@ function getBusinessViewModel ({ existingSchemes, parcels, sbi }) {
       ],
       [
         { text: 'Registered holdings' },
-        { text: `${holdingHectares} ha` }
+        { text: holdingHectares > 0 ? `${holdingHectares} ha` : 'None' }
+      ],
+      [
+        { text: 'Registered parcels' },
+        { text: parcels.length }
       ]
     ]
   }

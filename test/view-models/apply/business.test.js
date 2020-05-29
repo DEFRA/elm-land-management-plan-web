@@ -46,6 +46,11 @@ describe('getBusinessViewModel', () => {
     expect(result.existingSchemesTableDefinition).toEqual(expectedParcelsTable)
   })
 
+  test('excludes the schemes table in the view model if no schemes are given', () => {
+    const result = getBusinessViewModel({ existingSchemes: [], parcels, sbi })
+    expect(result.schemesTableDefinition).toEqual(undefined)
+  })
+
   test('includes a parcel table in the view model, with areas rounded to 4 decimal places', () => {
     const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
 
@@ -68,6 +73,11 @@ describe('getBusinessViewModel', () => {
     expect(result.parcelsTableDefinition).toEqual(expectedParcelsTable)
   })
 
+  test('excludes the parcel table in the view model if no parcels are given', () => {
+    const result = getBusinessViewModel({ existingSchemes, parcels: [], sbi })
+    expect(result.parcelsTableDefinition).toEqual(undefined)
+  })
+
   test('includes a summary table in the view model, with the holding area rounded to 4 decimal places', () => {
     const result = getBusinessViewModel({ existingSchemes, parcels, sbi })
 
@@ -76,7 +86,24 @@ describe('getBusinessViewModel', () => {
       firstCellIsHeader: true,
       rows: [
         [{ text: 'SBI' }, { text: sbi }],
-        [{ text: 'Registered holdings' }, { text: '10.5517 ha' }]
+        [{ text: 'Registered holdings' }, { text: '10.5517 ha' }],
+        [{ text: 'Registered parcels' }, { text: 5 }]
+      ]
+    }
+
+    expect(result.summaryTableDefinition).toEqual(expectedSummaryTable)
+  })
+
+  test('displays holdings as None in the summary table if the holding area is zero', () => {
+    const result = getBusinessViewModel({ existingSchemes, parcels: [], sbi })
+
+    const expectedSummaryTable = {
+      caption: 'Your business',
+      firstCellIsHeader: true,
+      rows: [
+        [{ text: 'SBI' }, { text: sbi }],
+        [{ text: 'Registered holdings' }, { text: 'None' }],
+        [{ text: 'Registered parcels' }, { text: 0 }]
       ]
     }
 

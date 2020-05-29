@@ -39,9 +39,9 @@
 
       {{ govukTable(summaryTableDefinition) }}
 
-      {{ govukTable(existingSchemesTableDefinition) }}
+      {{ govukTable(existingSchemesTableDefinition) if existingSchemesTableDefinition }}
 
-      {{ govukTable(parcelsTableDefinition) }}
+      {{ govukTable(parcelsTableDefinition) if parcelsTableDefinition }}
     </div>
   </div>
 {% endblock %}
