@@ -4,6 +4,7 @@ const businesses = require('../../data/businesses.json')
 const complianceService = require('../../services/compliance-service')
 const getBusinessViewModel = require('../../view-models/apply/business')
 const landService = require('../../services/land-service')
+const sbiSchema = require('../../schema/sbi')
 
 module.exports = {
   method: 'GET',
@@ -20,7 +21,7 @@ module.exports = {
     },
     validate: {
       params: Joi.object({
-        sbi: Joi.string().pattern(/^\d{9}$/).required()
+        sbi: sbiSchema
       })
     }
   }

@@ -4,10 +4,7 @@ module.exports = {
   options: {
     handler: async (request, h) => {
       try {
-        const businesses = [
-          { sbi: 106599008 }
-        ]
-        return h.view('apply/sign-in', { businesses })
+        return h.view('apply/sign-in')
       } catch (error) {
         console.error(error)
         return h.view('500')

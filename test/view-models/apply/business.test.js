@@ -30,31 +30,6 @@ describe('getBusinessViewModel', () => {
     expect(result.business).toEqual(business)
   })
 
-  test('includes an existing schemes table in the view model', () => {
-    const result = getBusinessViewModel({ business, existingSchemes, parcels })
-
-    const expectedParcelsTable = {
-      caption: 'Your existing schemes',
-      firstCellIsHeader: false,
-      head: [
-        { text: 'Scheme ID' },
-        { text: 'Start date' },
-        { text: 'End date' }
-      ],
-      rows: [
-        [{ text: 's1' }, { text: '2020-01-01' }, { text: '2021-01-01' }],
-        [{ text: 's2' }, { text: '2018-08-01' }, { text: '2020-08-01' }]
-      ]
-    }
-
-    expect(result.existingSchemesTableDefinition).toEqual(expectedParcelsTable)
-  })
-
-  test('excludes the schemes table in the view model if no schemes are given', () => {
-    const result = getBusinessViewModel({ business, existingSchemes: [], parcels })
-    expect(result.schemesTableDefinition).toEqual(undefined)
-  })
-
   test('includes a parcel table in the view model, with areas rounded to 4 decimal places', () => {
     const result = getBusinessViewModel({ business, existingSchemes, parcels })
 

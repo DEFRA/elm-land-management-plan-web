@@ -12,21 +12,6 @@ function sumParcelAreas (parcels) {
 }
 
 function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parcels }) {
-  const existingSchemesTableDefinition = existingSchemes.length === 0 ? undefined : {
-    caption: 'Your existing schemes',
-    firstCellIsHeader: false,
-    head: [
-      { text: 'Scheme ID' },
-      { text: 'Start date' },
-      { text: 'End date' }
-    ],
-    rows: existingSchemes.map(agreement => ([
-      { text: agreement.schemeId },
-      { text: agreement.dateStart },
-      { text: agreement.dateEnd }
-    ]))
-  }
-
   const parcelsTableDefinition = parcels.length === 0 ? undefined : {
     caption: 'Your land parcels',
     firstCellIsHeader: false,
@@ -66,7 +51,6 @@ function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parce
       name,
       sbi
     },
-    existingSchemesTableDefinition,
     parcelsTableDefinition,
     summaryTableDefinition
   }

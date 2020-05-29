@@ -2,6 +2,7 @@
 
 {% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
@@ -23,6 +24,10 @@
       {
         text: business.sbi + " - " + business.name,
         href: "/apply/businesses/" + business.sbi
+      },
+      {
+        text: "Eligibility check",
+        href: "/apply/businesses/" + business.sbi + "/eligibility"
       }
     ]
   }) }}
@@ -31,17 +36,24 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">Apply for ELM on behalf of SBI {{ business.sbi }}</h1>
+      <h1 class="govuk-heading-xl">Eligibility check</h1>
 
-      <p class="govuk-body">
-        You have selected to apply for ELM on behalf of the following business. Before you begin building your ELM application, review the information below and confirm that it is correct.
-      <p>
+      {% if hasExistingScheme %}
+        {{ govukWarningText({
+          text: "Your business has one or more existing Countryside Stewardship schemes. Once you submit your ELM application, it will be checked for compatibility with existing agreements.",
+          iconFallbackText: "Warning"
+        }) }}
+      {% else %}
+        <p class="govuk-body">
+          Your business has no existing agreements with Defra.
+        </p>
+      {% endif %}
 
-      {{ govukTable(summaryTableDefinition) }}
+      {{ govukTable(existingSchemesTableDefinition) if existingSchemesTableDefinition }}
 
       {{ govukButton({
-        href: "/apply/businesses/" + business.sbi + "/eligibility",
-        text: "Check eligibility"
+        href: "/apply/businesses/" + business.sbi + "/actions",
+        text: "Begin ELM application"
       }) }}
     </div>
   </div>
