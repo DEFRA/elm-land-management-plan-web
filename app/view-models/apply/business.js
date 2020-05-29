@@ -62,11 +62,11 @@ function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parce
   }
 
   return {
-    existingSchemesTableDefinition,
     business: {
       name,
       sbi
     },
+    existingSchemesTableDefinition,
     parcelsTableDefinition,
     summaryTableDefinition
   }

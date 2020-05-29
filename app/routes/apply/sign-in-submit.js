@@ -2,8 +2,6 @@ module.exports = {
   method: 'POST',
   path: '/apply/sign-in-submit',
   options: {
-    handler: async (request, h) => {
-      return h.redirect('/apply/businesses')
-    }
+    handler: async (request, h) => h.redirect('/apply/businesses')
   }
 }
