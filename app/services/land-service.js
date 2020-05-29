@@ -28,10 +28,6 @@ const landService = {
       throw Boom.failedDependency(`RPA Land Service gave an invalid response: ${rpaResponseValidation.error}`)
     }
 
-    if (rpaResponse.payload.features.length === 0) {
-      throw Boom.notFound('No parcel data found for requested SBI')
-    }
-
     return rpaResponse.payload.features.map(parcel => ({
       parcelId: parcel.properties.parcel_id,
       hectares: parcel.properties.area_ha
