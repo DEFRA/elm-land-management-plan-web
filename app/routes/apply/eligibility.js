@@ -16,11 +16,7 @@ module.exports = {
         const today = new Date().toISOString().slice(0, 10)
         const existingSchemes = await complianceService.getExistingSchemes(sbi, today)
 
-        if (existingSchemes.length > 0) {
-          return h.view('apply/eligibility', getEligibilityViewModel({ business, existingSchemes }))
-        } else {
-          return h.redirect(`/apply/businesses/${sbi}/actions`)
-        }
+        return h.view('apply/eligibility', getEligibilityViewModel({ business, existingSchemes }))
       } catch (error) {
         console.error(error)
         return h.view('500')

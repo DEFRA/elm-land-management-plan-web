@@ -1,4 +1,5 @@
 const routes = [].concat(
+  require('../routes/apply/actions'),
   require('../routes/apply/business'),
   require('../routes/apply/businesses'),
   require('../routes/apply/eligibility'),

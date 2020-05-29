@@ -81,19 +81,6 @@ describe('GET /apply/businesses/{sbi}/eligibility', () => {
     expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
   })
 
-  test('redirects to actions route if SBI has no existing schemes', async () => {
-    const options = {
-      method: 'GET',
-      url: `/apply/businesses/${sbiWithoutSchemes}/eligibility`
-    }
-
-    const response = await server.inject(options)
-
-    expect(response.statusCode).toBe(302)
-    expect(response.headers['content-type']).toBe('text/html; charset=utf-8')
-    expect(response.headers.location).toBe(`/apply/businesses/${sbiWithoutSchemes}/actions`)
-  })
-
   test('rejects SBI of length other than 9 characters', async () => {
     const insbiWithSchemess = [
       '12345678',

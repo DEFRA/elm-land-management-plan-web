@@ -40,12 +40,12 @@
 
       {% if hasExistingScheme %}
         {{ govukWarningText({
-          text: "Your business has one or more existing Countryside Stewardship schemes. Once you submit your ELM application, it will be checked for compatibility with existing agreements.",
+          text: "Your business is eligible to apply for ELM but has one or more existing Countryside Stewardship schemes. Once you submit your ELM application, it will be checked for compatibility with existing agreements.",
           iconFallbackText: "Warning"
         }) }}
       {% else %}
         <p class="govuk-body">
-          Your business has no existing agreements with Defra.
+          Your business is eligible to apply for ELM. There are no existing agreements between your business and Defra.
         </p>
       {% endif %}
 
@@ -53,7 +53,7 @@
 
       {{ govukButton({
         href: "/apply/businesses/" + business.sbi + "/actions",
-        text: "Begin ELM application"
+        text: "Begin application"
       }) }}
     </div>
   </div>
