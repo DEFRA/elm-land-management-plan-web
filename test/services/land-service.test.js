@@ -7,11 +7,6 @@ describe('landService', () => {
 
   jest.mock('../../app/utils/rest-client')
 
-  const rpaLandServiceResponseNotFound = {
-    payload: {
-      features: []
-    }
-  }
   const rpaLandServiceResponseOk = {
     payload: {
       features: [
