@@ -8,31 +8,33 @@ describe('complianceService', () => {
   jest.mock('../../app/utils/rest-client')
 
   const complianceServiceResponseWithoutSchemes = {
-    headers: {
+    res: {
       statusCode: 204
     }
   }
   const complianceServiceResponseWithSchemes = {
-    headers: {
+    res: {
       statusCode: 200
     },
-    payload: [
-      {
-        schemeId: 's1',
-        dateStart: '2017-08-01',
-        dateEnd: '2019-08-01'
-      },
-      {
-        schemeId: 's2',
-        dateStart: '2016-01-01',
-        dateEnd: '2018-07-01'
-      },
-      {
-        schemeId: 's3',
-        dateStart: '2015-01-01',
-        dateEnd: '2020-01-01'
-      }
-    ]
+    payload: {
+      items: [
+        {
+          schemeId: 's1',
+          dateStart: '2017-08-01',
+          dateEnd: '2019-08-01'
+        },
+        {
+          schemeId: 's2',
+          dateStart: '2016-01-01',
+          dateEnd: '2018-07-01'
+        },
+        {
+          schemeId: 's3',
+          dateStart: '2015-01-01',
+          dateEnd: '2020-01-01'
+        }
+      ]
+    }
   }
   const dateOutsideExistingSchemes = '2021-04-03'
   const dateWithinExistingScheme = '2017-03-17'

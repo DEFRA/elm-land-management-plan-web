@@ -8,17 +8,19 @@ describe('GET /apply/businesses/{sbi}', () => {
   const validSbi = '106599008'
   const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${validSbi}?date=${today}`
   const getExistingSchemesResponse = {
-    headers: {
+    res: {
       statusCode: 200
     },
-    payload: [
-      {
-        sbi: validSbi,
-        schemeId: 's1',
-        dateStart: '2017-08-01',
-        dateEnd: '2019-01-01'
-      }
-    ]
+    payload: {
+      items: [
+        {
+          sbi: validSbi,
+          schemeId: 's1',
+          dateStart: '2017-08-01',
+          dateEnd: '2019-01-01'
+        }
+      ]
+    }
   }
   const getParcelsUrl = `${config.rpaLandServiceUrl}/LandParcels/MapServer/0/query?where=SBI=${validSbi}&outFields=*&f=geojson`
   const getParcelsResponse = {

@@ -9,21 +9,23 @@ describe('GET /apply/businesses/{sbi}/eligibility', () => {
   const sbiWithSchemes = '106599008'
   const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${sbiWithSchemes}?date=${today}`
   const getExistingSchemesResponse = {
-    headers: {
+    res: {
       statusCode: 200
     },
-    payload: [
-      {
-        sbi: sbiWithSchemes,
-        schemeId: 's1',
-        dateStart: '2017-08-01',
-        dateEnd: '2019-01-01'
-      }
-    ]
+    payload: {
+      items: [
+        {
+          sbi: sbiWithSchemes,
+          schemeId: 's1',
+          dateStart: '2017-08-01',
+          dateEnd: '2019-01-01'
+        }
+      ]
+    }
   }
   const getNoExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${sbiWithoutSchemes}?date=${today}`
   const getNoExistingSchemesResponse = {
-    headers: {
+    res: {
       statusCode: 204
     },
     payload: []

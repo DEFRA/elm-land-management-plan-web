@@ -5,11 +5,13 @@ const complianceData = require('../data/compliance.json')
 const config = require('../config')
 const restClient = require('../utils/rest-client')
 
-const existingSchemesSchema = Joi.array().items(Joi.object({
-  schemeId: Joi.string().required(),
-  dateStart: Joi.date().required(),
-  dateEnd: Joi.date().required()
-}).unknown())
+const existingSchemesSchema = Joi.object({
+  items: Joi.array().items(Joi.object({
+    schemeId: Joi.string().required(),
+    dateStart: Joi.date(),
+    dateEnd: Joi.date()
+  }).unknown())
+})
 
 function getRequiredSchemeProperties ({ schemeId, dateStart, dateEnd }) {
   return { schemeId, dateStart, dateEnd }
@@ -25,10 +27,12 @@ const landService = {
       // TEMPORARY HACK TO TEST UI. REMOVE SWITCH AND USE ONLY THE restClient.get LINE ONCE COMPLIANCE SERVICE IS AVAILABLE
       if (process.env.STUB_COMPLIANCE_SERVICE === 'true') {
         complianceResponse = {
-          headers: {
+          res: {
             statusCode: 200
           },
-          payload: complianceData[sbi] || []
+          payload: {
+            items: complianceData[sbi] || []
+          }
         }
       } else {
         complianceResponse = await restClient.get(existingSchemesUrl)
@@ -42,18 +46,20 @@ const landService = {
     }
 
     let responsePayload
-    if (existingSchemesNotFound || complianceResponse.headers.statusCode === 204) {
-      responsePayload = []
+    if (existingSchemesNotFound || complianceResponse.res.statusCode === 204) {
+      responsePayload = { items: [] }
     } else {
       responsePayload = complianceResponse.payload
     }
+
+    console.debug({ existingSchemesUrl, complianceResponse, responsePayloadItems: responsePayload.items })
 
     const complianceResponseValidation = existingSchemesSchema.validate(responsePayload)
     if (complianceResponseValidation.error) {
       throw Boom.failedDependency(`Compliance Service gave an invalid response: ${complianceResponseValidation.error}`)
     }
 
-    return responsePayload.map(getRequiredSchemeProperties)
+    return responsePayload.items.map(getRequiredSchemeProperties)
   }
 }
 
