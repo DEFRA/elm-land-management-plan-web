@@ -1,5 +1,5 @@
 describe('GET /apply/businesses/{sbi}/actions', () => {
-  const sbi = '106599008'
+  const sbi = '107302137'
 
   let createServer
   let server

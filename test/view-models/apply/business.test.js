@@ -3,7 +3,7 @@ describe('getBusinessViewModel', () => {
 
   const business = {
     name: 'High farm',
-    sbi: '106599008'
+    sbi: '107302137'
   }
   const existingSchemes = [
     { schemeId: 's1', dateStart: '2020-01-01', dateEnd: '2021-01-01' },

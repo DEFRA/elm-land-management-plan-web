@@ -3,7 +3,7 @@ describe('getEligibilityViewModel', () => {
 
   const business = {
     name: 'High farm',
-    sbi: '106599008'
+    sbi: '107302137'
   }
   const existingSchemes = [
     { schemeId: 's1', dateStart: '2020-01-01T00:00:00', dateEnd: '2030-01-01T00:00:00' },
