@@ -1,3 +1,5 @@
+const formatDate = require('../../utils/format-date')
+
 function getBusinessViewModel ({ business: { name, sbi }, existingSchemes }) {
   const existingSchemesTableDefinition = existingSchemes.length === 0 ? undefined : {
     caption: 'Your existing schemes',
@@ -9,8 +11,8 @@ function getBusinessViewModel ({ business: { name, sbi }, existingSchemes }) {
     ],
     rows: existingSchemes.map(agreement => ([
       { text: agreement.schemeId },
-      { text: agreement.dateStart },
-      { text: agreement.dateEnd }
+      { text: formatDate(new Date(agreement.dateStart)) },
+      { text: formatDate(new Date(agreement.dateEnd)) }
     ]))
   }
 

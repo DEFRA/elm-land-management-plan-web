@@ -52,8 +52,6 @@ const landService = {
       responsePayload = complianceResponse.payload
     }
 
-    console.debug({ existingSchemesUrl, complianceResponse, responsePayloadItems: responsePayload.items })
-
     const complianceResponseValidation = existingSchemesSchema.validate(responsePayload)
     if (complianceResponseValidation.error) {
       throw Boom.failedDependency(`Compliance Service gave an invalid response: ${complianceResponseValidation.error}`)

@@ -17,8 +17,8 @@ describe('GET /apply/businesses/{sbi}/eligibility', () => {
         {
           sbi: sbiWithSchemes,
           schemeId: 's1',
-          dateStart: '2017-08-01',
-          dateEnd: '2019-01-01'
+          dateStart: '2017-08-01T00:00:00',
+          dateEnd: '2019-01-01T00:00:00'
         }
       ]
     }

@@ -6,8 +6,8 @@ describe('getEligibilityViewModel', () => {
     sbi: '106599008'
   }
   const existingSchemes = [
-    { schemeId: 's1', dateStart: '2020-01-01', dateEnd: '2030-01-01' },
-    { schemeId: 's2', dateStart: '2018-08-01', dateEnd: '2020-08-01' }
+    { schemeId: 's1', dateStart: '2020-01-01T00:00:00', dateEnd: '2030-01-01T00:00:00' },
+    { schemeId: 's2', dateStart: '2018-08-01T00:00:00', dateEnd: '2020-08-01T00:00:00' }
   ]
 
   test('returns an object as the view model', () => {
@@ -46,8 +46,8 @@ describe('getEligibilityViewModel', () => {
         { text: 'End date' }
       ],
       rows: [
-        [{ text: 's1' }, { text: '2020-01-01' }, { text: '2030-01-01' }],
-        [{ text: 's2' }, { text: '2018-08-01' }, { text: '2020-08-01' }]
+        [{ text: 's1' }, { text: '1/1/2020' }, { text: '1/1/2030' }],
+        [{ text: 's2' }, { text: '1/8/2018' }, { text: '1/8/2020' }]
       ]
     }
 
