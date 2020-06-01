@@ -64,9 +64,9 @@ describe('getBusinessViewModel', () => {
       caption: 'Your business',
       firstCellIsHeader: true,
       rows: [
-        [{ text: 'SBI' }, { text: sbi }],
-        [{ text: 'Registered holdings' }, { text: '10.5517 ha' }],
-        [{ text: 'Registered parcels' }, { text: 5 }]
+        [{ text: 'SBI' }, { text: sbi }, { html: '' }],
+        [{ text: 'Registered holdings' }, { text: '10.5517 ha' }, { html: '<a class="govuk-link" href="">Change</a>' }],
+        [{ text: 'Registered parcels' }, { text: 5 }, { html: '<a class="govuk-link" href="">Change</a>' }]
       ]
     }
 
@@ -80,9 +80,9 @@ describe('getBusinessViewModel', () => {
       caption: 'Your business',
       firstCellIsHeader: true,
       rows: [
-        [{ text: 'SBI' }, { text: sbi }],
-        [{ text: 'Registered holdings' }, { text: 'None' }],
-        [{ text: 'Registered parcels' }, { text: 0 }]
+        [{ text: 'SBI' }, { text: sbi }, { html: '' }],
+        [{ text: 'Registered holdings' }, { text: 'None' }, { html: '<a class="govuk-link" href="">Change</a>' }],
+        [{ text: 'Registered parcels' }, { text: 0 }, { html: '<a class="govuk-link" href="">Change</a>' }]
       ]
     }
 
