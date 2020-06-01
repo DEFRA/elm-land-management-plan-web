@@ -19,8 +19,8 @@ function getBusinessViewModel ({ business: { name, sbi }, existingSchemes }) {
       name,
       sbi
     },
-    existingSchemesTableDefinition,
-    hasExistingScheme: existingSchemes.length > 0
+    hasExistingScheme: existingSchemes.length > 0,
+    existingSchemesTableDefinition
   }
 }
 
