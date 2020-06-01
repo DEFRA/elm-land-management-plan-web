@@ -33,15 +33,18 @@ function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parce
     rows: [
       [
         { text: 'SBI' },
-        { text: sbi }
+        { text: sbi },
+        { html: '' }
       ],
       [
         { text: 'Registered holdings' },
-        { text: holdingHectares > 0 ? `${holdingHectares} ha` : 'None' }
+        { text: holdingHectares > 0 ? `${holdingHectares} ha` : 'None' },
+        { html: '<a class="govuk-link" href="">Change</a>' }
       ],
       [
         { text: 'Registered parcels' },
-        { text: parcels.length }
+        { text: parcels.length },
+        { html: '<a class="govuk-link" href="">Change</a>' }
       ]
     ]
   }
