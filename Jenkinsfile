@@ -64,6 +64,7 @@ node {
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.alb.tags="$albTags"/,
+            /ingress.class="alb"/,
             /ingress.endpoint="$serviceName"/,
             /ingress.server="$INGRESS_SERVER"/,
             /pr="$containerTag"/
@@ -101,6 +102,7 @@ node {
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
             /ingress.alb.tags="$albTags"/,
+            /ingress.class="alb"/,
             /ingress.endpoint="$serviceName"/,
             /ingress.server="$INGRESS_SERVER"/
           ].join(',')
