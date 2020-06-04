@@ -2,6 +2,7 @@ environment: production
 image: ffc-elm-apply
 name: ffc-elm-apply
 namespace: ffc-elm
+workstream: ffc-elm-apply
 
 container:
   allowPrivilegeEscalation: false
@@ -12,18 +13,18 @@ container:
   readOnlyRootFilesystem: true
   requestMemory: 60Mi
   requestCpu: 60m
-  runAsNonRoot: true
-  runAsUser: 1000
   staticCacheTimeoutMillis: 54000
 
 deployment:
-  imagePullSecret: myregistrykey
+  imagePullSecret:
   minReadySeconds: 5
   priorityClassName: low
   redeployOnChange: update this field to force a change
   replicas: 1
   restartPolicy: Always
-  
+  runAsNonRoot: true
+  runAsUser: 1000
+
 ingress:
   class: nginx
   endpoint: ffc-elm-apply
@@ -38,7 +39,6 @@ livenessProbe:
   path: /healthz
   periodSeconds: 10
   port: 3000
-  
 
 readinessProbe:
   initialDelaySeconds: 20
