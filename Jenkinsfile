@@ -60,13 +60,13 @@ node {
           ]) {
 
           def helmValues = [
-            /container.redeployOnChange="$pr-$BUILD_NUMBER"/,
-            /ingress.alb.tags="$albTags"/,
+            /container.redeployOnChange="$containerTag-$BUILD_NUMBER"/,
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint="$serviceName-$containerTag"/,
+            /ingress.alb.tags="$albTags"/,
+            /ingress.endpoint="$serviceName"/,
             /ingress.server="$INGRESS_SERVER"/,
-            /name="$serviceName-$containerTag"/
+            /pr="$containerTag"/
           ].join(',')
 
           def extraCommands = [
@@ -97,12 +97,12 @@ node {
           ]) {
 
           def helmValues = [
-            /container.redeployOnChange="$BUILD_NUMBER"/,
-            /ingress.alb.tags="$albTags"/,
+            /container.redeployOnChange="$containerTag-$BUILD_NUMBER"/,
             /ingress.alb.certificateArn="$albCertificateArn"/,
             /ingress.alb.securityGroups="$albSecurityGroups"/,
-            /ingress.endpoint=$serviceName/,
-            /ingress.server=$INGRESS_SERVER/
+            /ingress.alb.tags="$albTags"/,
+            /ingress.endpoint="$serviceName"/,
+            /ingress.server="$INGRESS_SERVER"/
           ].join(',')
 
           def extraCommands = [

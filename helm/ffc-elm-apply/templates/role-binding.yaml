@@ -1,0 +1,3 @@
+{{- include "ffc-helm-library.role-binding" (list . "ffc-elm-apply.role-binding") -}}
+{{- define "ffc-elm-apply.role-binding" -}}
+{{- end -}}
