@@ -5,7 +5,7 @@ describe('GET /apply/businesses/{sbi}/eligibility', () => {
   jest.mock('../../../app/utils/rest-client')
 
   const today = new Date().toISOString().slice(0, 10)
-  const sbiWithoutSchemes = '201293917'
+  const sbiWithoutSchemes = '106271639'
   const sbiWithSchemes = '107302137'
   const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${sbiWithSchemes}?date=${today}`
   const getExistingSchemesResponse = {
