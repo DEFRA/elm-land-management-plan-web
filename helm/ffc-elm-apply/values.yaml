@@ -6,7 +6,7 @@ workstream: ffc-elm-apply
 
 container:
   allowPrivilegeEscalation: false
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   limitCpu: 80m
   limitMemory: 80Mi
   port: 3000
