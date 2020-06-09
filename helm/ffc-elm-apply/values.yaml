@@ -53,8 +53,8 @@ secret:
   type: Opaque
 
 service:
-  port: 443
-  type: NodePort
+  port: 80
+  type: ClusterIP
 
 serviceAccount:
   name: ffc-elm-apply-account
