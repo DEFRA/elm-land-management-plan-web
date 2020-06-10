@@ -8,8 +8,6 @@ services:
     build:
       target: development
     image: ffc-elm-apply-development
-    environment:
-      STUB_COMPLIANCE_SERVICE: ${STUB_COMPLIANCE_SERVICE}
     ports:
       - "3000:3000"
       - "9229:9229"

@@ -12,8 +12,7 @@ if [ "${command}" = "" ]; then
 fi
 
 compose() {
-  # Remove STUB_COMPLIANCE_SERVICE=false once the compliance API is available and the temporary hack to stub it is removed
-  LOG_REQUESTS=false STUB_COMPLIANCE_SERVICE=false docker-compose -p "${project}-test" $@
+  LOG_REQUESTS=false docker-compose -p "${project}-test" $@
 }
 
 (
