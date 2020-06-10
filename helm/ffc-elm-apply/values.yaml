@@ -53,7 +53,7 @@ secret:
   type: Opaque
 
 service:
-  port: 3000
+  port: 443
   type: NodePort
 
 serviceAccount:
