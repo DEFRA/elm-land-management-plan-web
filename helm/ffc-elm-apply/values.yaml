@@ -54,7 +54,7 @@ secret:
 
 service:
   port: 80
-  type: ClusterIP
+  type: NodePort
 
 serviceAccount:
   name: ffc-elm-apply-account
