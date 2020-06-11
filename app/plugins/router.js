@@ -1,6 +1,10 @@
 const routes = [].concat(
+  require('../routes/apply/actions'),
   require('../routes/apply/business'),
-  require('../routes/apply/select-business'),
+  require('../routes/apply/businesses'),
+  require('../routes/apply/eligibility'),
+  require('../routes/apply/sign-in'),
+  require('../routes/apply/sign-in-submit'),
   require('../routes/home'),
   require('../routes/healthy'),
   require('../routes/healthz'),

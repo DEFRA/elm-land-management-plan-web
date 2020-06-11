@@ -1,12 +1,13 @@
-describe('GET /apply/businesses/{sbi}', () => {
+describe('GET /apply/businesses/{sbi}/eligibility', () => {
   const config = require('../../../app/config')
   const restClient = require('../../../app/utils/rest-client')
 
   jest.mock('../../../app/utils/rest-client')
 
   const today = new Date().toISOString().slice(0, 10)
-  const validSbi = '107302137'
-  const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${validSbi}?date=${today}`
+  const sbiWithoutSchemes = '106271639'
+  const sbiWithSchemes = '107302137'
+  const getExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${sbiWithSchemes}?date=${today}`
   const getExistingSchemesResponse = {
     res: {
       statusCode: 200
@@ -14,26 +15,20 @@ describe('GET /apply/businesses/{sbi}', () => {
     payload: {
       items: [
         {
-          sbi: validSbi,
+          sbi: sbiWithSchemes,
           schemeId: 's1',
-          dateStart: '2017-08-01',
-          dateEnd: '2019-01-01'
+          dateStart: '2017-08-01T00:00:00',
+          dateEnd: '2019-01-01T00:00:00'
         }
       ]
     }
   }
-  const getParcelsUrl = `${config.rpaLandServiceUrl}/LandParcels/MapServer/0/query?where=SBI=${validSbi}&outFields=*&f=geojson`
-  const getParcelsResponse = {
-    payload: {
-      features: [
-        {
-          properties: {
-            area_ha: 99,
-            parcel_id: 1
-          }
-        }
-      ]
-    }
+  const getNoExistingSchemesUrl = `${config.complianceServiceUrl}/schemes/${sbiWithoutSchemes}?date=${today}`
+  const getNoExistingSchemesResponse = {
+    res: {
+      statusCode: 204
+    },
+    payload: []
   }
 
   let createServer
@@ -46,11 +41,11 @@ describe('GET /apply/businesses/{sbi}', () => {
   beforeEach(async () => {
     restClient.get.mockImplementation(url => {
       switch (url) {
-        case getParcelsUrl:
-          return getParcelsResponse
-
         case getExistingSchemesUrl:
           return getExistingSchemesResponse
+
+        case getNoExistingSchemesUrl:
+          return getNoExistingSchemesResponse
 
         default:
           throw Error('restClient.get was called with an unexpected URL')
@@ -69,27 +64,17 @@ describe('GET /apply/businesses/{sbi}', () => {
   test('fetches existing schemes data from compliance API', async () => {
     const options = {
       method: 'GET',
-      url: `/apply/businesses/${validSbi}`
+      url: `/apply/businesses/${sbiWithSchemes}/eligibility`
     }
 
     await server.inject(options)
     expect(restClient.get).toHaveBeenCalledWith(getExistingSchemesUrl)
   })
 
-  test('fetches parcel data from RPA land API', async () => {
+  test('returns 200 with HTML payload if SBI has existing schemes', async () => {
     const options = {
       method: 'GET',
-      url: `/apply/businesses/${validSbi}`
-    }
-
-    await server.inject(options)
-    expect(restClient.get).toHaveBeenCalledWith(getParcelsUrl)
-  })
-
-  test('returns 200 with HTML payload if SBI is valid', async () => {
-    const options = {
-      method: 'GET',
-      url: `/apply/businesses/${validSbi}`
+      url: `/apply/businesses/${sbiWithSchemes}/eligibility`
     }
 
     const response = await server.inject(options)
@@ -99,15 +84,15 @@ describe('GET /apply/businesses/{sbi}', () => {
   })
 
   test('rejects SBI of length other than 9 characters', async () => {
-    const invalidSbis = [
+    const insbiWithSchemess = [
       '12345678',
       '1234567890'
     ]
 
-    for (const invalidSbi of invalidSbis) {
+    for (const insbiWithSchemes of insbiWithSchemess) {
       const options = {
         method: 'GET',
-        url: `/apply/businesses/${invalidSbi}`
+        url: `/apply/businesses/${insbiWithSchemes}`
       }
 
       const response = await server.inject(options)
@@ -121,16 +106,16 @@ describe('GET /apply/businesses/{sbi}', () => {
     const disallowedCharacters = '!"£$%^&*()-=_+{}[]:@~;\'<>,.|abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     for (const disallowedCharacter of disallowedCharacters) {
-      const invalidSbi = disallowedCharacter.concat(validSbi.slice(1))
+      const insbiWithSchemes = disallowedCharacter.concat(sbiWithSchemes.slice(1))
       const options = {
         method: 'GET',
-        url: `/apply/businesses/${invalidSbi}`
+        url: `/apply/businesses/${insbiWithSchemes}`
       }
 
       const response = await server.inject(options)
 
       if (response.statusCode !== 400) {
-        console.debug({ disallowedCharacter, invalidSbi, status: response.statusCode })
+        console.debug({ disallowedCharacter, insbiWithSchemes, status: response.statusCode })
       }
 
       expect(response.statusCode).toBe(400)

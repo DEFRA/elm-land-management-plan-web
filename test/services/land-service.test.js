@@ -7,11 +7,6 @@ describe('landService', () => {
 
   jest.mock('../../app/utils/rest-client')
 
-  const rpaLandServiceResponseNotFound = {
-    payload: {
-      features: []
-    }
-  }
   const rpaLandServiceResponseOk = {
     payload: {
       features: [
@@ -52,22 +47,6 @@ describe('landService', () => {
     expect(result).toContainEqual({ parcelId: 'p3', hectares: 1.19236 })
     expect(result).toContainEqual({ parcelId: 'p4', hectares: 0.91726 })
     expect(result).toContainEqual({ parcelId: 'p5', hectares: 2.12937 })
-  })
-
-  test('throws a "not found" error if RPA Land Service returns no features', async () => {
-    restClient.get.mockImplementation(() => rpaLandServiceResponseNotFound)
-
-    let thrownError
-
-    try {
-      await landService.getParcels(sbi)
-    } catch (error) {
-      thrownError = error
-    }
-
-    expect(Boom.isBoom(thrownError)).toBe(true)
-    expect(thrownError.output.statusCode).toBe(404)
-    expect(thrownError.output.payload.message).toBe('No parcel data found for requested SBI')
   })
 
   test('throws a "failed dependency" error if RPA Land Service errors', async () => {

@@ -11,8 +11,8 @@ function sumParcelAreas (parcels) {
   return (milliHectares / milliHectareFactor)
 }
 
-function getBusinessViewModel ({ parcels, sbi }) {
-  const parcelsTableDefinition = {
+function getBusinessViewModel ({ business: { name, sbi }, existingSchemes, parcels }) {
+  const parcelsTableDefinition = parcels.length === 0 ? undefined : {
     caption: 'Your land parcels',
     firstCellIsHeader: false,
     head: [
@@ -33,17 +33,25 @@ function getBusinessViewModel ({ parcels, sbi }) {
     rows: [
       [
         { text: 'SBI' },
-        { text: sbi }
+        { text: sbi },
+        { html: '' }
       ],
       [
-        { text: 'Total holdings' },
-        { text: `${holdingHectares} ha` }
+        { text: 'Registered holdings' },
+        { text: holdingHectares > 0 ? `${holdingHectares} ha` : 'None' },
+        { html: '<a class="govuk-link" href="">Change</a>' }
+      ],
+      [
+        { text: 'Registered parcels' },
+        { text: parcels.length },
+        { html: '<a class="govuk-link" href="">Change</a>' }
       ]
     ]
   }
 
   return {
     business: {
+      name,
       sbi
     },
     parcelsTableDefinition,

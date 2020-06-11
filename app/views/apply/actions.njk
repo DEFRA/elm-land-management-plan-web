@@ -1,0 +1,49 @@
+{% extends 'layout.njk' %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Apply for ELM",
+        href: "/apply"
+      },
+      {
+        text: "Select business",
+        href: "/apply/businesses"
+      },
+      {
+        text: business.sbi + " - " + business.name,
+        href: "/apply/businesses/" + business.sbi
+      },
+      {
+        text: "Eligibility check",
+        href: "/apply/businesses/" + business.sbi + "/eligibility"
+      },
+      {
+        text: "Select actions",
+        href: "/apply/businesses/" + business.sbi + "/actions"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Select actions...</h1>
+
+      <p class="govuk-body">
+        This concludes the technical demonstration of ELM integration with external APIs and data sources.
+      </p>
+      <p class="govuk-body">
+        The next steps in the user journey might be to select ELM actions to build up an application, as per the UCD prototype, with validation rules and calculations running in the background to determine the value of the user's application as it is compiled.
+      </p>
+    </div>
+  </div>
+{% endblock %}

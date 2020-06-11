@@ -1,0 +1,59 @@
+{% extends 'layout.njk' %}
+
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block beforeContent %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: "Home",
+        href: "/"
+      },
+      {
+        text: "Apply for ELM",
+        href: "/apply"
+      },
+      {
+        text: "Select business",
+        href: "/apply/businesses"
+      },
+      {
+        text: business.sbi + " - " + business.name,
+        href: "/apply/businesses/" + business.sbi
+      },
+      {
+        text: "Eligibility check",
+        href: "/apply/businesses/" + business.sbi + "/eligibility"
+      }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">Eligibility check</h1>
+
+      {% if hasExistingScheme %}
+        {{ govukInsetText({
+          text: "Your business is eligible to apply for ELM. As you are registered for one or more Countryside Stewardship schemes, your ELM application will be checked for compatibility with these agreements on submission."
+        })}}
+      {% else %}
+        {{ govukInsetText({
+          text: "Your business is eligible to apply for ELM"
+        })}}
+      {% endif %}
+
+      {{ govukTable(existingSchemesTableDefinition) if existingSchemesTableDefinition }}
+
+      {{ govukButton({
+        href: "/apply/businesses/" + business.sbi + "/actions",
+        text: "Start application"
+      }) }}
+    </div>
+  </div>
+{% endblock %}

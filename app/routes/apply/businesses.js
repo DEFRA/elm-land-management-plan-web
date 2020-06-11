@@ -1,13 +1,12 @@
+const businesses = require('../../data/businesses.json')
+
 module.exports = {
   method: 'GET',
-  path: '/apply',
+  path: '/apply/businesses',
   options: {
     handler: async (request, h) => {
       try {
-        const businesses = [
-          { sbi: 106599008 }
-        ]
-        return h.view('apply/select-business', { businesses })
+        return h.view('apply/businesses', { businesses })
       } catch (error) {
         console.error(error)
         return h.view('500')
