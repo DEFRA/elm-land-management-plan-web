@@ -2,45 +2,60 @@ environment: production
 image: ffc-elm-apply
 name: ffc-elm-apply
 namespace: ffc-elm
-auth:
-imagePullSecret: myregistrykey
+workstream: ffc-elm-apply
+
+container:
+  allowPrivilegeEscalation: false
+  imagePullPolicy: Always
+  limitCpu: 80m
+  limitMemory: 80Mi
+  port: 3000
+  readOnlyRootFilesystem: true
+  requestMemory: 60Mi
+  requestCpu: 60m
+  staticCacheTimeoutMillis: 54000
+
+deployment:
+  imagePullSecret:
+  minReadySeconds: 5
+  priorityClassName: low
+  redeployOnChange: update this field to force a change
+  replicas: 1
+  restartPolicy: Always
+  runAsNonRoot: true
+  runAsUser: 1000
+
+ingress:
+  class: nginx
+  endpoint: ffc-elm-apply
+  server: localhost
+
+labels:
+  component: apply
+
+livenessProbe:
+  initialDelaySeconds: 30
+  failureThreshold: 3
+  path: /healthz
+  periodSeconds: 10
+  port: 3000
+
+readinessProbe:
+  initialDelaySeconds: 20
+  failureThreshold: 3
+  path: /healthy
+  periodSeconds: 10
+  port: 3000
+
+secret:
+  auth:
+  name: ffc-elm-apply-basic-auth
+  type: Opaque
 
 service:
   port: 443
   type: NodePort
 
-container:
-  priorityClassName: low
-  imagePullPolicy: Always
-  redeployOnChange: update this field to force a change
-  requestMemory: 60Mi
-  requestCpu: 60m
-  limitMemory: 80Mi
-  limitCpu: 80m
-  runAsNonRoot: true
-  runAsUser: 1000
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  restartPolicy: Always
-  staticCacheTimeoutMillis: 54000
-
-ingress:
-  endPoint: ffc-elm-apply
-  server: localhost
-
-replicas: 1
-minReadySeconds: 5
-
-readinessProbe:
-  path: /healthy
-  port: 3000
-  initialDelaySeconds: 20
-  periodSeconds: 10
-  failureThreshold: 3
-
-livenessProbe:
-  path: /healthz
-  port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  failureThreshold: 3
+serviceAccount:
+  name: ffc-elm-apply-account
+  roleArn:

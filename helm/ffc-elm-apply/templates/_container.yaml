@@ -1,0 +1,22 @@
+{{- define "ffc-elm-apply.container" -}}
+name: {{ quote .Values.name }}
+
+env:
+- name: NODE_ENV
+  value: {{ quote .Values.environment }}
+
+- name: PORT
+  value: {{ quote .Values.container.port }}
+
+- name: STATIC_CACHE_TIMEOUT_IN_MILLIS
+  value: {{ quote .Values.container.staticCacheTimeoutMillis }}
+
+livenessProbe: {{ include "ffc-helm-library.http-get-probe" (list . .Values.livenessProbe) | nindent 4 }}
+
+ports:
+- containerPort: {{ .Values.container.port }}
+  name: http
+  protocol: TCP
+
+readinessProbe: {{ include "ffc-helm-library.http-get-probe" (list . .Values.readinessProbe) | nindent 4 }}
+{{- end -}}
