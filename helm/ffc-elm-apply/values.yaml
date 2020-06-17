@@ -2,7 +2,7 @@ environment: production
 image: ffc-elm-apply
 name: ffc-elm-apply
 namespace: ffc-elm
-workstream: ffc-elm-apply
+workstream: ffc-elm
 
 container:
   allowPrivilegeEscalation: false
