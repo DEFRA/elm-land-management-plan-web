@@ -10,3 +10,6 @@ auth
 lcov.info
 npm-debug.log
 test-output
+
+# Helm lock files
+helm/**/*.lock
